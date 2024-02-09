@@ -1,0 +1,9 @@
+certifi
+chardet
+idna
+numpy
+pathlib
+Pillow
+requests
+scipy
+urllib3

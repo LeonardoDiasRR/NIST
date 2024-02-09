@@ -1,0 +1,21 @@
+
+NIST27\NIST\NIST\fingerprint\functions.py:
+Before:
+    from cStringIO import StringIO, InputType, OutputType
+After:
+    from io import StringIO
+    from io import StringIO as InputType  # Patch to Python3
+    from io import StringIO as OutputType  # Patch to Python3
+
+Justify:
+There is no module cStringIO in Python3
+
+NIST30\MDmisc\MDmisc\DefaultOrderedDict.py:
+Before:
+    from collections import OrderedDict, Callable
+After:
+    from collections import OrderedDict
+    from collections.abc import Callable
+
+Justify:
+Callable is moved form collections.abc to collections.abc
