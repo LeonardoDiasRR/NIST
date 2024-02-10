@@ -5,7 +5,7 @@ from pathlib import Path
 
 arquivo = Path(__file__) + r'/download/202007231646204053190120240940.nst'
 
-with open(arquivo, 'rb') as file:
+with open(str(arquivo), 'rb') as file:
     nist_bin = file
 
 nist = NIST(arquivo)
