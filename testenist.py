@@ -1,8 +1,9 @@
 from NIST import NIST
 import io
+from pathlib import Path
 
 
-arquivo = r'download\202007231646204053190120240940.nst'
+arquivo = Path(__file__) + r'/download/202007231646204053190120240940.nst'
 
 with open(arquivo, 'rb') as file:
     nist_bin = file
