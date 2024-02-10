@@ -34,7 +34,7 @@ class NIST( NIST_Core ):
             else:
                 self.read( p )
         
-        elif isinstance( p, ( io.OutputType ) ):
+        elif isinstance( p, ( StringIO ) ):
             self.load( p.getvalue() )
         
         elif isinstance( p, ( file ) ):

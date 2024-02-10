@@ -75,7 +75,10 @@ After:
     from io import StringIO as cStringIO
 
 
-NIST3/MDmisc/MDmisc/objmanipulate.py
+NIST3\NIST\NIST\traditional\__init__.py
 Before:
-
+    elif isinstance( p, ( io.OutputType ) ):
+        self.load( p.getvalue() )
 After:
+    elif isinstance( p, ( StringIO ) ):
+        self.load( p.getvalue() )
