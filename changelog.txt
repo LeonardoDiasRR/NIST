@@ -8,7 +8,7 @@ After:
     from io import StringIO as OutputType  # Patch to Python3
 
 Justify:
-There is no module cStringIO in Python3
+    There is no module cStringIO in Python3
 
 NIST30\MDmisc\MDmisc\DefaultOrderedDict.py:
 Before:
@@ -18,4 +18,63 @@ After:
     from collections.abc import Callable
 
 Justify:
-Callable is moved form collections.abc to collections.abc
+    Callable is moved form collections.abc to collections.abc
+
+
+NIST3\NIST\NIST\core\config.py
+Added:
+    FS = chr( 28 ).encode('utf-8')
+    GS = chr( 29 ).encode('utf-8')
+    RS = chr( 30 ).encode('utf-8')
+    US = chr( 31 ).encode('utf-8')
+    CO = ':'.encode('utf-8')
+    DO = '.'.encode('utf-8')
+
+Justify:
+    
+
+NIST3\NIST\NIST\traditional\__init__.py
+Before:
+    records = data.split( FS )
+After:
+    records = data.split( FS )
+
+NIST3/NIST/NIST/traditional/__init__.py
+Before:
+    t01 = records[ 0 ].split( GS )
+After:
+    t01 = records[ 0 ].split( GS )
+
+
+NIST3\NIST\NIST\core\functions.py
+Before:
+    tag, value = data.split( CO, 1 )
+    ntype, tagid = tag.split( DO )
+After:
+    tag, value = data.split( CO, 1 )
+    ntype, tagid = tag.split( DO )
+
+NIST3\NIST\NIST\core\__init__.py
+Before:
+        try:
+            data = [list(map( int, x.split( US ) )) for x in data.split( RS )]
+        except:
+            data = replace_r( split_r( [ RS, US ], data ), '', '1' )
+            data = map_r( int, data )
+After:
+        try:
+            data = [list(map( int, x.split( US ) )) for x in data.split( RS )]
+        except:
+            data = replace_r( split_r( [ RS, US ], data ), '', '1' )
+            data = map_r( int, data )
+
+
+NIST3\NIST\NIST\traditional\__init__.py
+Before:
+                current_type = data.split( FS )
+                
+                tx = current_type[ 0 ].split( GS )
+After:
+                current_type = data.split( FS )
+                
+                tx = current_type[ 0 ].split( GS )
