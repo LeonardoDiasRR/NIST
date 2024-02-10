@@ -2,7 +2,8 @@
 # -*- coding: UTF-8 -*-
 
 from collections import OrderedDict
-from io import StringIO as cStringIO
+# from io import StringIO as cStringIO
+from io import StringIO
 import hashlib
 import os
 
