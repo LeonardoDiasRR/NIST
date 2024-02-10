@@ -68,13 +68,14 @@ After:
             data = replace_r( split_r( [ RS, US ], data ), '', '1' )
             data = map_r( int, data )
 
-
 NIST3\NIST\NIST\traditional\__init__.py
 Before:
-                current_type = data.split( FS )
-                
-                tx = current_type[ 0 ].split( GS )
+    import cStringIO
 After:
-                current_type = data.split( FS )
-                
-                tx = current_type[ 0 ].split( GS )
+    from io import StringIO as cStringIO
+
+
+NIST3/MDmisc/MDmisc/objmanipulate.py
+Before:
+
+After:
