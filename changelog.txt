@@ -68,17 +68,21 @@ After:
             data = replace_r( split_r( [ RS, US ], data ), '', '1' )
             data = map_r( int, data )
 
-NIST3\NIST\NIST\traditional\__init__.py
-Before:
-    import cStringIO
-After:
-    from io import StringIO as cStringIO
-
 
 NIST3\NIST\NIST\traditional\__init__.py
 Before:
-    elif isinstance( p, ( io.OutputType ) ):
-        self.load( p.getvalue() )
+    (1) import cStringIO
+    ...
+    (2) elif isinstance( p, ( io.OutputType ) ):
+            self.load( p.getvalue() )
+    (3) elif isinstance( p, ( file ) ):
+            self.load( p.read() )
 After:
-    elif isinstance( p, ( StringIO ) ):
-        self.load( p.getvalue() )
+    (1) from io import StringIO
+    ...
+    (2) elif isinstance( p, ( StringIO ) ):
+            self.load( p.getvalue() )
+    ...
+    (3) elif isinstance( p, ( io.BufferedReader ) ):
+            self.load( p.read() )
+

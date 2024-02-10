@@ -2,7 +2,6 @@
 # -*- coding: UTF-8 -*-
 
 from collections import OrderedDict
-# from io import StringIO as cStringIO
 from io import StringIO
 import hashlib
 import os
@@ -38,7 +37,7 @@ class NIST( NIST_Core ):
         elif isinstance( p, ( StringIO ) ):
             self.load( p.getvalue() )
         
-        elif isinstance( p, ( file ) ):
+        elif isinstance( p, ( io.BufferedReader ) ):
             self.load( p.read() )
         
         elif isinstance( p, ( NIST, dict ) ):
