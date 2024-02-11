@@ -71,7 +71,7 @@ After:
 
 NIST3\NIST\NIST\traditional\__init__.py
 Before:
-    (1) import cStringIO
+    (1) from io import StringIO, BufferedReader
     ...
     (2) elif isinstance( p, ( io.OutputType ) ):
             self.load( p.getvalue() )
