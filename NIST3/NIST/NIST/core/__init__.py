@@ -29,6 +29,8 @@ from .functions import bindump, default_origin, get_label, decode_fgp, encode_fg
 from .voidType import voidType
 from ..core.functions import leveler, printableFieldSeparator, split, tagSplitter
 
+from .exceptions import ntypeNotFound
+
 ################################################################################
 # 
 #    NIST object class
