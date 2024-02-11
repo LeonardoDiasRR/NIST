@@ -3,12 +3,14 @@ import io
 from pathlib import Path
 
 
-arquivo = Path(__file__).parent / r'download/202007231646204053190120240940.nst'
+arquivo =  r'./download/202007231646204053190120240940.nst'
 
 with open(arquivo, 'rb') as file:
     nist_bin = file
 
 nist = NIST(arquivo)
+
+print(nist)
 
 # print(type(nist_bin))
 # if isinstance(nist_bin, io.BufferedReader):
