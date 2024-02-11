@@ -4,8 +4,6 @@
 from collections import OrderedDict, Counter
 from copy import deepcopy
 from io import StringIO
-from io import StringIO as InputType  # Patch to Python3
-from io import StringIO as OutputType  # Patch to Python3
 
 from math import sqrt
 from PIL import Image
@@ -247,7 +245,7 @@ def changeFormatImage( input, outformat, **options ):
                 else:
                     img = RAWToPIL( input, **options )
     
-    elif isinstance( input, ( OutputType, InputType ) ):
+    elif isinstance( input, StringIO ):
         img = Image.open( input )
     
     else:

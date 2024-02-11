@@ -283,6 +283,9 @@ def bindump( data, n = 8 ):
             '0001020304050607 ... F8F9FAFBFCFDFEFF (256 bytes)'
     """
 
+    if isinstance(data, bytes):
+        data = data.decode('iso-8859-1')
+
     pre = [ data[ i ] for i in range( int(n / 2) ) ]
     post = [ data[ -( i + 1 ) ] for i in range( int(n / 2) ) ]
     

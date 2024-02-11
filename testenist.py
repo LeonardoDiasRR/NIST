@@ -39,15 +39,16 @@ print(my_nist)
 
 # print(json.dumps(pessoa, indent=4))
 
-foto = my_nist.get_field('10.999')
-foto = foto.encode('iso-8859-1')
+foto = my_nist.get_field('10.999', idc=11)
+# foto = foto.encode('iso-8859-1')
 print(type(foto))
 with open('foto.jpg', 'wb') as fp:
     fp.write(foto)
 
-# digital = my_nist.get_field(tag=4, idc=999)
-# print(type(digital))
-# with open('digital.jpg', 'wb') as fp:
-#     fp.write(digital)
+digital = my_nist.get_field('4.999', idc=10)
+# digital = digital.encode('iso-8859-1')
+print(type(digital))
+with open('digital.wsq', 'wb') as fp:
+    fp.write(digital)
 
 
