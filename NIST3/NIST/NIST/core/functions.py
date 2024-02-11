@@ -282,8 +282,9 @@ def bindump( data, n = 8 ):
             >>> bindump( data, 16 )
             '0001020304050607 ... F8F9FAFBFCFDFEFF (256 bytes)'
     """
-    pre = [ data[ i ] for i in range( n / 2 ) ]
-    post = [ data[ -( i + 1 ) ] for i in range( n / 2 ) ]
+
+    pre = [ data[ i ] for i in range( int(n / 2) ) ]
+    post = [ data[ -( i + 1 ) ] for i in range( int(n / 2) ) ]
     
     pre = multimap( [ ord, hexformat ], pre )
     post = multimap( [ ord, hexformat ], post )

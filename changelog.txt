@@ -21,68 +21,76 @@ Justify:
     Callable is moved form collections.abc to collections.abc
 
 
-NIST3\NIST\NIST\core\config.py
-Added:
-    FS = chr( 28 ).encode('utf-8')
-    GS = chr( 29 ).encode('utf-8')
-    RS = chr( 30 ).encode('utf-8')
-    US = chr( 31 ).encode('utf-8')
-    CO = ':'.encode('utf-8')
-    DO = '.'.encode('utf-8')
-
-Justify:
-    
-
 NIST3\NIST\NIST\traditional\__init__.py
 Before:
-    records = data.split( FS )
-After:
-    records = data.split( FS )
-
-NIST3/NIST/NIST/traditional/__init__.py
-Before:
-    t01 = records[ 0 ].split( GS )
-After:
-    t01 = records[ 0 ].split( GS )
-
-
-NIST3\NIST\NIST\core\functions.py
-Before:
-    tag, value = data.split( CO, 1 )
-    ntype, tagid = tag.split( DO )
-After:
-    tag, value = data.split( CO, 1 )
-    ntype, tagid = tag.split( DO )
-
-NIST3\NIST\NIST\core\__init__.py
-Before:
-        try:
-            data = [list(map( int, x.split( US ) )) for x in data.split( RS )]
-        except:
-            data = replace_r( split_r( [ RS, US ], data ), '', '1' )
-            data = map_r( int, data )
-After:
-        try:
-            data = [list(map( int, x.split( US ) )) for x in data.split( RS )]
-        except:
-            data = replace_r( split_r( [ RS, US ], data ), '', '1' )
-            data = map_r( int, data )
-
-
-NIST3\NIST\NIST\traditional\__init__.py
-Before:
-    (1) from io import StringIO, BufferedReader
-    ...
-    (2) elif isinstance( p, ( io.OutputType ) ):
+(1)     from io import StringIO, BufferedReader
+...
+(2)
+        elif isinstance( p, ( cStringIO.OutputType ) ):
             self.load( p.getvalue() )
-    (3) elif isinstance( p, ( file ) ):
-            self.load( p.read() )
+        
+        elif isinstance( p, ( file ) ):
+            self.load( p.read() )            
 After:
     (1) from io import StringIO
     ...
-    (2) elif isinstance( p, ( StringIO ) ):
+    (2)
+        elif isinstance( p, ( StringIO ) ):
             self.load( p.getvalue() )
-    ...
-    (3) elif isinstance( p, ( io.BufferedReader ) ):
+        
+        elif isinstance( p, ( bytes ) ):
+            self.load( p )
+        
+        elif isinstance( p, ( IOBase ) ):
             self.load( p.read() )
+    (3)
+        if isinstance(data, bytes):
+            data = data.decode('iso-8859-1')
 
+
+Justify:
+    Necessary to decode binary data to str, becouse Python 2.7 reads binary as str 
+
+NIST3\NIST\NIST\core\__init__.py
+After:
+    data = data.decode('iso-8859-1')
+Justify:
+    Python2.7 reads binary data as 'str', while Python 3 reads binary data as 'bytes', 
+    so I decoded the data from 'bytes' to 'str'
+
+NIST3\MDmisc\MDmisc\binary.py
+Before:
+    binstring = [ oct2bin[int( n )] for n in oct( x ) ]
+After:
+    binstring = [ oct2bin[int( n )] for n in '0' + oct( x )[2:] ]  # Patch for Python 3
+Justify:
+    In Python 3, the oct() function still converts an integer to its octal representation, 
+    but the returned string uses the prefix '0o' (zero and lowercase letter 'o') to clearly indicate octal values
+Ex.:
+    # Python 3
+    octal_string = oct(8)
+    print(octal_string)  # Output: "0o10"
+
+NIST3\NIST\NIST\core\functions.py
+Before:
+    range( n / 2 )
+After:
+    range( int(n / 2) )
+Justify:
+    range() function in Python 3 does not works with float values
+
+NIST3\MDmisc\MDmisc\binary.py
+Before:
+    range( nbytes )
+    range( nbites )
+After:    
+    range( int(nbytes) )
+    range( int(nbites) )
+
+NIST3\NIST\NIST\traditional\__init__.py
+Before:
+    return "".join( outnist )
+After:
+    return ("".join( outnist )).encode('iso-8859-1')
+Justify:
+    In Python 3 bytes objects are diferent from str, like in Python 2.7

@@ -27,8 +27,10 @@ def int_to_bin( x, digits = 0 ):
         >>> int_to_bin( 1337, 32 )
         '00000000000000000000010100111001'
     """
+    
     oct2bin = [ '000', '001', '010', '011', '100', '101', '110', '111' ] 
-    binstring = [ oct2bin[int( n )] for n in oct( x ) ]
+    # binstring = [ oct2bin[int( n )] for n in oct( x ) ]
+    binstring = [ oct2bin[int( n )] for n in '0' + oct( x )[2:] ]  # Patch for Python 3
     binstring = ''.join( binstring ).lstrip( '0' )
     
     if digits == 'up':
@@ -71,7 +73,7 @@ def int_to_bytes( n, minlen = 0 ):
     nbytes = ( nbits + 7 ) / 8
     bytes = []
     
-    for i in range( nbytes ):
+    for i in range( int(nbytes) ):
         bytes.append( chr( n & 0xff ) )
         n >>= 8
     
@@ -106,7 +108,7 @@ def int_to_binstring( data, digits = 'up' ):
     
     iterbyte = stringIterator( b )
     
-    return join( [ chr( bin_to_int( iterbyte.take( 8 ) ) ) for _ in range( nbites ) ] )
+    return join( [ chr( bin_to_int( iterbyte.take( 8 ) ) ) for _ in range( int(nbites) ) ] )
 
 def string_to_hex( value ):
     return join( multimap( [ ord, myhex ], value ) )

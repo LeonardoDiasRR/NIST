@@ -174,6 +174,9 @@ class NIST( object ):
     
         with open( infile, "rb" ) as fp:
             data = fp.read()
+
+        # Patch to Python3
+        data = data.decode('iso-8859-1')
         
         if data[ 0 ] == "{" and data[ -1 ] == "}":
             self.from_json( data )
@@ -1068,9 +1071,9 @@ class NIST( object ):
                 '0500'
         """
         ntype, tagid = tagSplitter( tag )
-        
+
         idc = self.checkIDC( ntype, idc )
-    
+
         try:
             return self.data[ ntype ][ idc ][ tagid ]
         except:

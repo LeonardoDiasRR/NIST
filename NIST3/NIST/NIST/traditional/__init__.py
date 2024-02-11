@@ -2,7 +2,7 @@
 # -*- coding: UTF-8 -*-
 
 from collections import OrderedDict
-from io import StringIO, BufferedReader
+from io import StringIO, IOBase
 import hashlib
 import os
 
@@ -27,21 +27,24 @@ class NIST( NIST_Core ):
             :param p: Input data to parse to NIST object.
             :type p: NIST or str
         """
+
         if isinstance( p, str ):
             if ifany( [ FS, GS, RS, US ], p ):
-                self.load( p )
-                
+                self.load( p )                
             else:
                 self.read( p )
         
         elif isinstance( p, ( StringIO ) ):
             self.load( p.getvalue() )
         
-        elif isinstance( p, ( BufferedReader ) ):
+        elif isinstance( p, ( bytes ) ):
+            self.load( p )
+        
+        elif isinstance( p, ( IOBase ) ):
             self.load( p.read() )
         
         elif isinstance( p, ( NIST, dict ) ):
-            if isinstance( p, NIST ):
+            if isinstance( p, NIST ):                
                 p = p.data
             
             for ntype, tmp in p.items():
@@ -67,6 +70,10 @@ class NIST( NIST_Core ):
             :type data: str
         """
         debug.debug( "Loading object" )
+
+        # Decode bytes to str
+        if isinstance(data, bytes):
+            data = data.decode('iso-8859-1')
         
         records = data.split( FS )
         
@@ -237,7 +244,7 @@ class NIST( NIST_Core ):
                     od = OrderedDict( sorted( self.data[ ntype ][ idc ].items() ) )
                     outnist.append( join( GS, [ tagger( ntype, tagid ) + value for tagid, value in od.items() ] ) + FS )
         
-        return "".join( outnist )
+        return ("".join( outnist )).encode('iso-8859-1')
 
     def write( self, outfile ):
         """
@@ -255,6 +262,7 @@ class NIST( NIST_Core ):
             fp.write( self.dumpbin() )
     
     def hash( self ):
+        
         return hashlib.md5( self.dumpbin() ).hexdigest()
     
     ############################################################################
