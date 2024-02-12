@@ -1,3 +1,5 @@
+This is a Python3 version of the https://github.com/mdedonno1337/NIST project. 
+
 HOW TO INSTALL?
 1. Copy NIST folder to your python project root folder.
 2. Activate your project python3 environment.
