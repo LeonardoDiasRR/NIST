@@ -1075,7 +1075,7 @@ class NIST( object ):
         idc = self.checkIDC( ntype, idc )
 
         try:
-            if tagid == 999:
+            if self.is_binary(ntype=ntype, tagid=tagid):
                 binary_data = self.data[ ntype ][ idc ][ tagid ]
                 return binary_data.encode('iso-8859-1')
 
