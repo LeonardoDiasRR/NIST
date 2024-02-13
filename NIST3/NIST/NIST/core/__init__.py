@@ -1139,7 +1139,11 @@ class NIST( object ):
             if ntype in [ 3, 4, 5, 6 ] and tagid == 4:
                 value = encode_fgp( value )
                 
-            if not isinstance( value, str ):
+            # Patch to Python3
+            if isinstance( value, bytes):
+                value = value.decode('iso-8859-1')
+            
+            elif not isinstance( value, str ):
                 value = str( value )
             
             if len( value ) == 0:
