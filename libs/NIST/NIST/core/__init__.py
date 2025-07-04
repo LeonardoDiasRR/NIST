@@ -171,12 +171,17 @@ class NIST( object ):
     
         with open( infile, "rb" ) as fp:
             data = fp.read()
-        
-        if data[ 0 ] == "{" and data[ -1 ] == "}":
-            self.from_json( data )
-        
+
+        if isinstance( data, bytes ):
+            decoded = data.decode( 'latin-1' )
         else:
-            self.load( data )
+            decoded = data
+
+        if decoded and decoded[ 0 ] == "{" and decoded[ -1 ] == "}":
+            self.from_json( decoded )
+
+        else:
+            self.load( decoded )
     
     def process_fileContent( self, data ):
         """
@@ -198,10 +203,10 @@ class NIST( object ):
                 [2, 4, 7, 8, 9, 10, 13, 14, 15, 16, 17, 18, 19, 20, 20, 21, 21, 98, 99]
         """
         try:
-            data = map( lambda x: map( int, x.split( US ) ), data.split( RS ) )
-        except:
+            data = [ list( map( int, x.split( US ) ) ) for x in data.split( RS ) ]
+        except Exception:
             data = replace_r( split_r( [ RS, US ], data ), '', '1' )
-            data = map_r( int, data )
+            data = list( map_r( int, data ) )
         
         self.nbLogicalRecords = data[ 0 ][ 1 ]
         
