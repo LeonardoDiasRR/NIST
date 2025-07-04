@@ -34,10 +34,16 @@ class NIST( NIST_Core ):
                 self.read( p )
         
         elif isinstance( p, BytesIO ):
-            self.load( p.getvalue() )
+            data = p.getvalue()
+            if isinstance( data, bytes ):
+                data = data.decode( 'latin-1' )
+            self.load( data )
 
         elif isinstance( p, IOBase ):
-            self.load( p.read() )
+            data = p.read()
+            if isinstance( data, bytes ):
+                data = data.decode( 'latin-1' )
+            self.load( data )
         
         elif isinstance( p, ( NIST, dict ) ):
             if isinstance( p, NIST ):
@@ -66,6 +72,9 @@ class NIST( NIST_Core ):
             :type data: str
         """
         debug.debug( "Loading object" )
+
+        if isinstance( data, bytes ):
+            data = data.decode( 'latin-1' )
         
         records = data.split( FS )
         
