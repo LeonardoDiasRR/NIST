@@ -18,4 +18,10 @@ resulting in ``UnicodeDecodeError`` during parsing.  The library now uses
 ``latin-1`` when reading, writing or hashing textual fields to preserve
 the original byte content.
 
+Binary payloads such as JPEG or WSQ images can now be passed to
+``set_field`` directly as ``bytes``.  The library converts them to its
+internal ``latin-1`` representation automatically.  Accessing these
+fields via ``get_field`` returns the original ``bytes`` object so callers
+no longer need to manually encode or decode the data.
+
 
