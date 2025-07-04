@@ -221,7 +221,11 @@ def encode_fgp( code, separator = "/" ):
         code = code.split( separator )
         
     # Cast all values to integer
-    code = map( int, code )
+    # Cast all values to integers. ``map`` returns an iterator in Python 3,
+    # but the resulting sequence is needed multiple times below (iteration,
+    # extending and slicing). Materialise it as a list to avoid exhaustion and
+    # to support list operations.
+    code = list(map(int, code))
     
     # Check for the min (0) and max value (14)
     for v in code:

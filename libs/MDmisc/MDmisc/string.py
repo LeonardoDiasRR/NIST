@@ -87,8 +87,12 @@ def split_r( lst, s ):
             [['1', '2', '3'], ['4', '5', '6'], ['7', '8', '9']]
     """
     try:
-        return map( lambda x: split_r( lst[ 1: ], x ), s.split( lst[ 0 ] ) )
-    except:
+        # ``map`` returned a list in Python 2, but an iterator in Python 3.
+        # The callers of :func:`split_r` expect a nested list structure and
+        # often index into the result, so we materialise the result explicitly
+        # as a list.
+        return [ split_r( lst[1:], x ) for x in s.split( lst[0] ) ]
+    except Exception:
         return s
 
 class stringIterator( object ):
