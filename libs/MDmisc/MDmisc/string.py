@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: UTF-8 -*-
 
-import collections
+from collections.abc import Mapping, Iterable
 import unicodedata
 
 def upper( data ):
@@ -130,18 +130,19 @@ def split_no_empty( data, string ):
     """
     return [ value for value in data.split( string ) if value != "" ]
 
+
 def unicode2str( data ):
-    if type( data ) == str:
+    if isinstance( data, str ):
         return data
-     
-    elif type( data ) == str:
-        return str( data.encode( 'utf-8', 'ignore' ).strip() )
-    
-    elif isinstance( data, collections.Mapping ):
-        return dict( list(map( unicode2str, iter(list(data.items())) )) )
-    
-    elif isinstance( data, collections.Iterable ):
-        return type( data )( list(map( unicode2str, data )) )
+
+    elif isinstance( data, bytes ):
+        return data.decode( 'utf-8', 'ignore' ).strip()
+
+    elif isinstance( data, Mapping ):
+        return dict( map( unicode2str, data.items() ) )
+
+    elif isinstance( data, Iterable ):
+        return type( data )( map( unicode2str, data ) )
     
     else:
         return data
