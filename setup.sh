@@ -44,23 +44,12 @@ for lib in NIST MDmisc PMlib WSQ; do
         echo "➡️ Instalando dependências de $LIB_PATH/requirements.txt..."
         pip install -r "$LIB_PATH/requirements.txt"
     fi
+
 done
 
-# Cria arquivo .pth para tornar as bibliotecas visíveis ao Python
-SITE_PACKAGES=$(python - <<'EOF'
-import site
-print(site.getsitepackages()[0])
-EOF
-)
-PTH_FILE="$SITE_PACKAGES/mdedonno.pth"
-
-echo "➡️ Criando $PTH_FILE..."
-printf "%s\n" \
-    "$(pwd)/libs/NIST" \
-    "$(pwd)/libs/WSQ" \
-    "$(pwd)/libs/PMlib" \
-    "$(pwd)/libs/MDmisc" \
-    > "$PTH_FILE"
-echo "✅ $PTH_FILE criado."
+# Instala bibliotecas da pasta libs no ambiente virtual
+echo "➡️ Instalando bibliotecas auxiliares no ambiente virtual..."
+python install_nist.py "$VENV_DIR" "$LIBS_DIR/"
+echo "✅ Bibliotecas auxiliares instaladas."
 
 echo "✅ Setup concluído com sucesso."
