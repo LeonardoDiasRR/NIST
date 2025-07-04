@@ -264,7 +264,11 @@ class NIST( NIST_Core ):
     
     def hash( self ):
 
-        return hashlib.md5( self.dumpbin().encode('latin-1') ).hexdigest()
+        dump = self.dumpbin()
+        if isinstance( dump, str ):
+            dump = dump.encode('latin-1')
+
+        return hashlib.md5( dump ).hexdigest()
     
     ############################################################################
     # 
