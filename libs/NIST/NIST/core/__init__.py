@@ -173,7 +173,7 @@ class NIST( object ):
             data = fp.read()
 
         if isinstance( data, bytes ):
-            decoded = data.decode( 'utf-8' )
+            decoded = data.decode( 'latin-1' )
         else:
             decoded = data
 
