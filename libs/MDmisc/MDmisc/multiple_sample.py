@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python3
 # -*- coding: UTF-8 -*-
 
 import random
@@ -12,7 +12,7 @@ class multiple_sample( object ):
         
         Get 5 samples of 3 elements between 0 and 10: 
         
-            >>> print [ i for i in multiple_sample( 3, 10, 5 ) ]
+            >>> print([ i for i in multiple_sample( 3, 10, 5 ) ])
             [[6, 4, 2], [5, 1, 6], [3, 7, 8], [3, 8, 1], [6, 8, 0]]
     """
     def __init__( self, size, maxValue, number = None ):
@@ -20,7 +20,7 @@ class multiple_sample( object ):
         self.maxValue = maxValue
         self.number = number
         
-        self.lst = xrange( self.maxValue )
+        self.lst = range( self.maxValue )
         self.i = 0
         
     def __iter__( self ):

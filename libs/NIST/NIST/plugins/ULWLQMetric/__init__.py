@@ -172,8 +172,8 @@ try:
                 for y, v in enumerate( data ):
                     for x, vv in enumerate( v ):
                         if vv in toplot:
-                            for a in xrange( 0, fac ):
-                                for b in xrange( 0, fac ):
+                            for a in range( 0, fac ):
+                                for b in range( 0, fac ):
                                     pixels[ fac * x + a, fac * y + b ] = ULWcolour[ vv ]
                 
                 latent = options.get( "img", self.get_latent( "PIL", idc ) )

@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python3
 # -*- coding: UTF-8 -*-
 
 from collections import OrderedDict
@@ -18,7 +18,7 @@ def eOrderedDictParser( obj ):
     if isinstance( obj, OrderedDict ):
         obj.__class__ = eOrderedDict
         
-        for i, ( k, v ) in enumerate( obj.iteritems() ):
+        for i, ( k, v ) in enumerate( obj.items() ):
             eOrderedDictParser( v )
     
     elif isinstance( obj, list ):

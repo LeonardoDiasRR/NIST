@@ -4,7 +4,7 @@
 from __future__ import print_function
 
 import zipfile
-from cStringIO import StringIO as io
+from io import BytesIO as io
 
 class ZipFileExtended( zipfile.ZipFile ):
     def removeFile( self, *filenames ):

@@ -29,7 +29,7 @@ class DefaultOrderedDict( OrderedDict ):
             args = tuple()
         else:
             args = self.default_factory,
-        return type( self ), args, None, None, self.iteritems()
+        return type( self ), args, None, None, self.items()
 
     def copy( self ):
         return self.__copy__()
@@ -45,7 +45,7 @@ class DefaultOrderedDict( OrderedDict ):
         return 'DefaultOrderedDict(%s, %s)' % ( self.default_factory, OrderedDict.__repr__( self ) )
     
     def to_dict( self ):
-        for key, value in self.iteritems():
+        for key, value in self.items():
             if isinstance( value, DefaultOrderedDict ):
                 self[ key ] = value.to_dict()
             

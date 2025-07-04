@@ -1,10 +1,9 @@
-#!/usr/bin/python
+#!/usr/bin/env python3
 # -*- coding: UTF-8 -*-
 
 from collections import OrderedDict, Counter
 from copy import deepcopy
-from cStringIO import StringIO, InputType, OutputType
-from itertools import izip
+from io import BytesIO, IOBase
 from math import sqrt
 from PIL import Image
 
@@ -229,7 +228,7 @@ def changeFormatImage( input, outformat, **options ):
     
     elif isinstance( input, str ):
         try:
-            buff = StringIO( input )
+            buff = BytesIO( input )
             img = Image.open( buff )
             
             if img.format in [ "TGA" ]:
@@ -245,7 +244,7 @@ def changeFormatImage( input, outformat, **options ):
                 else:
                     img = RAWToPIL( input, **options )
     
-    elif isinstance( input, ( OutputType, InputType ) ):
+    elif isinstance( input, IOBase ):
         img = Image.open( input )
     
     else:
@@ -263,7 +262,7 @@ def changeFormatImage( input, outformat, **options ):
     
     else:
         try:
-            buff = StringIO()
+            buff = BytesIO()
             img.save( buff, format = outformat )
             return Image.open( buff )
         
@@ -452,10 +451,10 @@ class Annotation( object ):
         
         if kwargs:
             self.set_format( format = kwargs.keys() )
-            self._data = OrderedDict( kwargs.iteritems() )
+            self._data = OrderedDict( kwargs.items() )
         
         elif len( args ) != 0:
-            self._data = OrderedDict( izip( list( self._format ), args[ 0 ] ) )
+            self._data = OrderedDict( zip( list( self._format ), args[ 0 ] ) )
         
         else:
             self._data = OrderedDict( [] )

@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python3
 # -*- coding: UTF-8 -*-
 
 import datetime
@@ -224,7 +224,7 @@ class NIST( object ):
         """
         for ntype in b.get_ntype():
             for idc in b.get_idc( ntype ):
-                for tagid, value in b.data[ ntype ][ idc ].iteritems():
+                for tagid, value in b.data[ ntype ][ idc ].items():
                     self.data[ ntype ][ idc ][ tagid ] = value
         
         self.clean()
@@ -263,7 +263,7 @@ class NIST( object ):
                         if not idc in self.get_idc( ntype ):
                             ret.add_idc( ntype, idc )
                         
-                        for tagid, value in other.data[ ntype ][ idc ].iteritems():
+                        for tagid, value in other.data[ ntype ][ idc ].items():
                             ret.set_field( ( ntype, tagid ), value, idc )
         
         return ret
@@ -515,7 +515,7 @@ class NIST( object ):
         else:
             ret.append( "NIST Type-%02d" % ntype )
                 
-        for tagid, value in iter( sorted( d.iteritems() ) ):
+        for tagid, value in iter( sorted( d.items() ) ):
             lab = get_label( ntype, tagid, fullname )
             header = "%02d.%03d %s" % ( ntype, tagid, lab )
             
@@ -959,15 +959,15 @@ class NIST( object ):
         
         self.data = defDict()
         
-        for ntype, idcs in data.iteritems():
+        for ntype, idcs in data.items():
             ntype = int( ntype )
             self.add_ntype( ntype )
              
-            for idc, tagids in idcs.iteritems():
+            for idc, tagids in idcs.items():
                 idc = int( idc )
                 self.add_idc( ntype, idc )
                  
-                for tagid, value in tagids.iteritems():
+                for tagid, value in tagids.items():
                     tagid = int( tagid )
                     
                     if self.is_binary( ntype, tagid ):
@@ -1416,8 +1416,8 @@ class NIST( object ):
                 [(1, 0, 1), (1, 0, 2), (1, 0, 3), (1, 0, 4), (1, 0, 5), (1, 0, 6), (1, 0, 7), (1, 0, 8), (1, 0, 9), (1, 0, 10), (1, 0, 11), (1, 0, 12), (1, 0, 13), (1, 0, 14), (1, 0, 15), (1, 0, 16), (1, 0, 17), (2, 0, 1), (2, 0, 2)]
         """
         lst = []
-        for ntype, idcs in self.data.iteritems():
-            for idc, tagids in idcs.iteritems():
+        for ntype, idcs in self.data.items():
+            for idc, tagids in idcs.items():
                 for tagid in tagids.keys():
                     lst.append( ( ntype, idc, tagid ) )
         

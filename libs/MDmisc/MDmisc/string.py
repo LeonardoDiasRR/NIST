@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python3
 # -*- coding: UTF-8 -*-
 
 import collections
@@ -126,31 +126,27 @@ def split_no_empty( data, string ):
     return [ value for value in data.split( string ) if value != "" ]
 
 def unicode2str( data ):
-    if type( data ) == str:
+    if isinstance( data, str ):
         return data
-     
-    elif type( data ) == unicode:
-        return str( data.encode( 'utf-8', 'ignore' ).strip() )
-    
+    elif isinstance( data, bytes ):
+        return data.decode( 'utf-8', 'ignore' )
     elif isinstance( data, collections.Mapping ):
-        return dict( map( unicode2str, data.iteritems() ) )
-    
+        return { k: unicode2str( v ) for k, v in data.items() }
     elif isinstance( data, collections.Iterable ):
         return type( data )( map( unicode2str, data ) )
-    
     else:
         return data
 
 def remove_accents( data, encodingin = 'ISO-8859-1', encodingout = 'ASCII' ):
     if isinstance( data, dict ):
-        for key, value in data.iteritems():
+        for key, value in data.items():
             try:
                 data[ key ] = remove_accents( value, encodingin, encodingout )
             except TypeError:
                 continue
         return data
     else:
-        if isinstance( data, str ):
-            data = unicode( data, encodingin )
+        if isinstance( data, bytes ):
+            data = data.decode( encodingin )
         
         return unicodedata.normalize( 'NFKD', data ).encode( encodingout, 'ignore' )

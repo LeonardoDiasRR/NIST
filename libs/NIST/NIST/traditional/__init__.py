@@ -1,8 +1,8 @@
-#!/usr/bin/python
+#!/usr/bin/env python3
 # -*- coding: UTF-8 -*-
 
 from collections import OrderedDict
-import cStringIO
+from io import BytesIO, IOBase
 import hashlib
 import os
 
@@ -26,32 +26,32 @@ class NIST( NIST_Core ):
             :param p: Input data to parse to NIST object.
             :type p: NIST or str
         """
-        if isinstance( p, ( str, unicode ) ):
+        if isinstance( p, str ):
             if ifany( [ FS, GS, RS, US ], p ):
                 self.load( p )
                 
             else:
                 self.read( p )
         
-        elif isinstance( p, ( cStringIO.OutputType ) ):
+        elif isinstance( p, BytesIO ):
             self.load( p.getvalue() )
-        
-        elif isinstance( p, ( file ) ):
+
+        elif isinstance( p, IOBase ):
             self.load( p.read() )
         
         elif isinstance( p, ( NIST, dict ) ):
             if isinstance( p, NIST ):
                 p = p.data
             
-            for ntype, tmp in p.iteritems():
+            for ntype, tmp in p.items():
                 ntype = int( ntype )
                 self.add_ntype( ntype )
                 
-                for idc, tmp2 in tmp.iteritems():
+                for idc, tmp2 in tmp.items():
                     idc = int( idc )
                     self.add_idc( ntype, idc )
                     
-                    for tagid, value in tmp2.iteritems():
+                    for tagid, value in tmp2.items():
                         tagid = int( tagid )
                         
                         self.set_field( ( ntype, tagid ), value, idc )
@@ -234,7 +234,7 @@ class NIST( NIST_Core ):
                     outnist.append( self.data[ ntype ][ idc ][ 999 ] )
                 else:
                     od = OrderedDict( sorted( self.data[ ntype ][ idc ].items() ) )
-                    outnist.append( join( GS, [ tagger( ntype, tagid ) + value for tagid, value in od.iteritems() ] ) + FS )
+                    outnist.append( join( GS, [ tagger( ntype, tagid ) + value for tagid, value in od.items() ] ) + FS )
         
         return "".join( outnist )
 
@@ -297,7 +297,7 @@ class NIST( NIST_Core ):
         # Iteration over all IDC
         debug.debug( "Iterate over fields in the IDC-%d" % idc, 1 )
         recordsize = 0
-        for tagid, value in self.data[ ntype ][ idc ].iteritems():
+        for tagid, value in self.data[ ntype ][ idc ].items():
             recordsize += len( value ) + lentag
             debug.debug( "Field %d.%03d : added % 9d to the recordsize (now %d)" % ( ntype, tagid, len( value ) + lentag, recordsize ), 2 )
         
