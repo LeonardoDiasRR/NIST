@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python3
 # -*- coding: UTF-8 -*-
 
 from __future__ import division
@@ -79,7 +79,7 @@ def shift_point( point, delta, revert = False ):
     point = list( point )
     r = -1 if revert else 1
     
-    for i in xrange( len( delta ) ):
+    for i in range( len( delta ) ):
         point[ i ] += r * delta[ i ]
     
     return point

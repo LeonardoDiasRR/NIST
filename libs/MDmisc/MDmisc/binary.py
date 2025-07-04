@@ -103,11 +103,11 @@ def int_to_binstring( data, digits = 'up' ):
         'leet'
     """
     b = int_to_bin( data, digits )
-    nbites = len( b ) / 8
+    nbites = len( b ) // 8
     
     iterbyte = stringIterator( b )
     
-    return join( [ chr( bin_to_int( iterbyte.take( 8 ) ) ) for _ in xrange( nbites ) ] )
+    return join( [ chr( bin_to_int( iterbyte.take( 8 ) ) ) for _ in range( nbites ) ] )
 
 def string_to_hex( value ):
     return join( multimap( [ ord, myhex ], value ) )
@@ -127,10 +127,10 @@ def hex_to_int( x ):
 def bindump( data ):
     ret = [ "Offset    00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F    ASCII", "-" * 77 ]
     
-    for offset in xrange( 0, len( data ), 16 ):
+    for offset in range( 0, len( data ), 16 ):
         tmpbin = []
         tmpascii = []
-        for col in xrange( 0, 16 ):
+        for col in range( 0, 16 ):
             try:
                 c = data[ offset + col ]
                 tmpbin.append( myhex( ord( c ) ) )

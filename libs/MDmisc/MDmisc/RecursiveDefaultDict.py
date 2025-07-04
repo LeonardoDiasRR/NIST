@@ -12,7 +12,7 @@ class edefaultdict( defaultdict ):
         return [ self.get( key ) for key in lst ]
 
     def to_dict( self ):
-        for key, value in self.iteritems():
+        for key, value in self.items():
             if isinstance( value, edefaultdict ):
                 self[ key ] = value.to_dict()
             

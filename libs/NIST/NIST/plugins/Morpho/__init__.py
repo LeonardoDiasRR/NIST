@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python3
 # -*- coding: UTF-8 -*-
 
 import base64
@@ -7,7 +7,7 @@ import xmltodict
 import zipfile
 
 from _collections import defaultdict
-from cStringIO import StringIO
+from io import BytesIO
 
 from MDmisc.elist import ifany
 from MDmisc.ewarning import nowarnings
@@ -203,7 +203,7 @@ class NIST_Morpho( NISTf ):
             def actionProcess( action, minutiae_list, autominutiae_list, deltas_list, cores_list ):
                 # Minutiae processing
                 if action == "newMinutiaSet":
-                    for key, v in value[ action ].iteritems():
+                    for key, v in value[ action ].items():
                         for vv in v:
                             m = MorphoXML2Minutia( vv )
                             m.source = "auto"
@@ -371,7 +371,7 @@ class NIST_Morpho( NISTf ):
         if data != None:
             data = base64.decodestring( data )
             
-            buffer = StringIO()
+            buffer = BytesIO()
             buffer.write( data )
             
             ret = defaultdict()

@@ -1,9 +1,9 @@
-#!/usr/bin/python
+#!/usr/bin/env python3
 # -*- coding: UTF-8 -*-
 
 from __future__ import absolute_import, division
 
-from cStringIO import StringIO
+from io import BytesIO
 from math import cos, pi, sin
 from PIL import Image, ImageDraw, ImageFont, ImageOps, ImageColor
 from scipy.spatial.qhull import ConvexHull
@@ -312,7 +312,7 @@ class NISTf( NIST_traditional ):
             15: 13,
         }
         
-        for ntype, fieldid in fields.iteritems():
+        for ntype, fieldid in fields.items():
             idcs = self.data[ ntype ].keys()
             for idc in idcs:
                 fpc = self.get_field( ( ntype, fieldid ), idc )
@@ -488,7 +488,7 @@ class NISTf( NIST_traditional ):
                 
             ret = []
             
-            for idc in xrange( 1, 11 ):
+            for idc in range( 1, 11 ):
                 try:
                     ret.append( self.get_minutiae( format = format, idc = idc ) )
                 except idcNotFound:
@@ -1072,7 +1072,7 @@ class NISTf( NIST_traditional ):
                     Minutia( i='3', x='18.59', y='24.0', t='96', q='00', d='D' )
                 ]
         """
-        tofilter = [ ( key, value ) for key, value in kwargs.iteritems() ]
+        tofilter = [ ( key, value ) for key, value in kwargs.items() ]
         if len( tofilter ) == 0:
             return self.get_minutiae( idc = idc )
         
@@ -2577,7 +2577,7 @@ class NISTf( NIST_traditional ):
                 '8da4bdb447bfd07380e382e14d90453c'
         """
         maxh, maxw = ( 0, 0 )
-        for idc in xrange( 1, 11 ):
+        for idc in range( 1, 11 ):
             try:
                 w, h = self.get_size( idc )
                 maxw = max( maxw, w )
@@ -2597,7 +2597,7 @@ class NISTf( NIST_traditional ):
             
         ret = Image.new( mode, size, col )
         
-        for idc in xrange( 1, 11 ):
+        for idc in range( 1, 11 ):
             try:
                 if annotated:
                     img = self.get_print_annotated( idc )
@@ -2662,7 +2662,7 @@ class NISTf( NIST_traditional ):
             14: ( 2, 221, 75, 279 ),
         }
         
-        for fpc in xrange( 1, 15 ):
+        for fpc in range( 1, 15 ):
             try:
                 p = self.get_print( "PIL", fpc = fpc )
                 

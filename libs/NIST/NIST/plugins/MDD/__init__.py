@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python3
 # -*- coding: UTF-8 -*-
 
 from __future__ import division
@@ -362,7 +362,7 @@ class NIST_MDD( NISTf ):
                 
             ret = []
             
-            for idc in xrange( 1, 11 ):
+            for idc in range( 1, 11 ):
                 try:
                     ret.append( self.get_minutiae_paired( format = format, idc = idc ) )
                 except idcNotFound:

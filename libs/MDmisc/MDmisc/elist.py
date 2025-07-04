@@ -1,7 +1,7 @@
-#!/usr/bin/python
+#!/usr/bin/env python3
 # -*- coding: UTF-8 -*-
 
-import collections
+import collections.abc as collections
 
 from .map_r import map_r
 
@@ -16,7 +16,7 @@ def replace_r( x, s, r ):
 
 def flatten( lst ):
     for e in lst:
-        if isinstance( e, collections.Iterable ) and not isinstance( e, basestring ):
+        if isinstance( e, collections.Iterable ) and not isinstance( e, str ):
             for sublist in flatten( e ):
                 yield sublist
         else:
@@ -62,5 +62,5 @@ class elist( list ):
         return [ e( *args, **kwargs ) for e in self ]
 
 def chunks( l, n ):
-    for i in xrange( 0, len( l ), n ):
+    for i in range( 0, len( l ), n ):
         yield l[i:i + n]

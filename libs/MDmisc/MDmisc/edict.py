@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python3
 # -*- coding: UTF-8 -*-
 
 import collections
@@ -6,8 +6,8 @@ import collections
 class edict( dict ):
     def reverse( self ):
         d = {}
-        for key, value in self.iteritems():
-            if d.has_key( value ):
+        for key, value in self.items():
+            if value in d:
                 if type( d[ value ] ) != list:
                     d[ value ] = [ d[ value ] ]
                     
@@ -18,7 +18,7 @@ class edict( dict ):
         return d
     
     def search( self, searched ):
-        for key, value in self.iteritems():
+        for key, value in self.items():
             if value == searched:
                 return key
         
@@ -29,7 +29,7 @@ class edict( dict ):
         return [ self.get( key ) for key in lst ]
     
     def get_r( self, path, split = "/" ):
-        if isinstance( path, ( str, unicode ) ):
+        if isinstance( path, str ):
             path = path.split( split )
         
         tmp = self

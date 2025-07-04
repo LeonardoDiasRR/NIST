@@ -5,7 +5,7 @@ SETLOCAL
 SET VENV_DIR=venv
 
 echo [1/5] Criando ambiente virtual em %VENV_DIR%...
-python -m venv %VENV_DIR%
+python3.12 -m venv %VENV_DIR%
 IF ERRORLEVEL 1 (
     echo Erro ao criar o ambiente virtual.
     EXIT /B 1

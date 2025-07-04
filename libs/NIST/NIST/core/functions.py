@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python3
 # -*- coding: UTF-8 -*-
 
 from PIL import Image
@@ -155,7 +155,7 @@ def decode_fgp( code, only_first = False, separator = "/" ):
     code = int_to_bin( code, 6 * 8 )
     
     # Split in chunks of 8 bites
-    code = [ code[ i:i + 8 ] for i in xrange( 0, len( code ), 8 ) ]
+    code = [ code[ i:i + 8 ] for i in range( 0, len( code ), 8 ) ]
     
     # Convert each chunk to decimal
     code = [ bin_to_int( c ) for c in code ]
@@ -275,15 +275,15 @@ def bindump( data, n = 8 ):
         Usage:
         
             >>> from NIST.core.functions import bindump
-            >>> data = "".join( [ chr( x ) for x in xrange( 256 ) ] )
+            >>> data = "".join( [ chr( x ) for x in range( 256 ) ] )
             >>> bindump( data )
             '00010203 ... FCFDFEFF (256 bytes)'
             
             >>> bindump( data, 16 )
             '0001020304050607 ... F8F9FAFBFCFDFEFF (256 bytes)'
     """
-    pre = [ data[ i ] for i in xrange( n / 2 ) ]
-    post = [ data[ -( i + 1 ) ] for i in xrange( n / 2 ) ]
+    pre = [ data[ i ] for i in range( n // 2 ) ]
+    post = [ data[ -( i + 1 ) ] for i in range( n // 2 ) ]
     
     pre = multimap( [ ord, hexformat ], pre )
     post = multimap( [ ord, hexformat ], post )
@@ -471,4 +471,4 @@ def split( data, chunks_size ):
             >>> split( "000102030405060708090A0B0C0D0E", 4 )
             ['0001', '0203', '0405', '0607', '0809', '0A0B', '0C0D', '0E']
     """
-    return [ data[ start : start + chunks_size ] for start in xrange( 0, len( data ), chunks_size ) ]
+    return [ data[ start : start + chunks_size ] for start in range( 0, len( data ), chunks_size ) ]
