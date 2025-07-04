@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 #  *-* coding: utf-8 *-*
 
-from collections import OrderedDict, Callable
+from collections import OrderedDict
+from collections.abc import Callable
 
 class DefaultOrderedDict( OrderedDict ):
     # Source: http://stackoverflow.com/a/6190500/562769
