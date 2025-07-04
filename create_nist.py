@@ -45,7 +45,7 @@ with open(f'amostras\digitais\digital_1.wsq', 'rb') as f:
     digital = f.read()
     new_nist.set_field('4.999', digital, idc=1)
 
-# Salva o nist no disco
-new_nist.write('novo_nist.nst')
+# Salva o nist no disco usando UTF-8
+new_nist.write('novo_nist.nst', encoding='utf-8')
 
 print(new_nist)
