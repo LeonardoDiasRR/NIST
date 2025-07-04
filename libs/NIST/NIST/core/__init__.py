@@ -250,7 +250,7 @@ class NIST( object ):
         for ntype in other.get_ntype():
             if ntype != 1:
                 for idc in other.get_idc( ntype ):
-                    if ret.data[ ntype ].has_key( idc ) and not update:
+                    if idc in ret.data[ ntype ] and not update:
                         if ignore:
                             continue
                         else:
@@ -340,7 +340,7 @@ class NIST( object ):
             
             :raise ntypeNotFound: if the ntype is not present in the NIST object
         """
-        if self.data.has_key( ntype ):
+        if ntype in self.data:
             del( self.data[ ntype ] )
         else:
             raise ntypeNotFound
@@ -357,7 +357,7 @@ class NIST( object ):
             
             :raise idcNotFound: if the IDC for the ntype is not present in the NIST object
         """
-        if self.data.has_key( ntype ) and self.data[ ntype ].has_key( idc ):
+        if ntype in self.data and idc in self.data[ ntype ]:
             del( self.data[ ntype ][ idc ] )
         else:
             raise idcNotFound
@@ -378,7 +378,7 @@ class NIST( object ):
         
         idc = self.checkIDC( ntype, idc )
         
-        if self.data.has_key( ntype ) and self.data[ ntype ].has_key( idc ):
+        if ntype in self.data and idc in self.data[ ntype ]:
             del( self.data[ ntype ][ idc ][ tagid ] )
         else:
             raise tagNotFound

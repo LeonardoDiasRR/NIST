@@ -27,9 +27,9 @@ class ProgressBar:
     
     def clean( self ):
 #        if sys.platform.lower().startswith('win'):
-            print self, "\r",
+            print(self, "\r", end="")
 #        else:
-#            print self, chr(27) + '[A'
+#            print(self, chr(27) + '[A', end="")
         
     def update( self, n = None ):
         if n == None:
