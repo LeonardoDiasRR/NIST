@@ -247,28 +247,26 @@ class NIST( NIST_Core ):
         
         return "".join( outnist )
 
-    def write( self, outfile, encoding="latin-1" ):
+    def write( self, outfile ):
         """
             Write the NIST object to a specific file.
-
+            
             :param outfile: URI of the file to write to.
             :type outfile: str
-            :param encoding: Character encoding used when writing textual fields.
-            :type encoding: str
         """
-        debug.debug( "Write the NIST object to '%s' using %s encoding" % ( outfile, encoding ) )
-
+        debug.debug( "Write the NIST object to '%s'" % outfile )
+        
         if not os.path.isdir( os.path.dirname( os.path.realpath( outfile ) ) ):
             os.makedirs( os.path.dirname( os.path.realpath( outfile ) ) )
-
+        
         with open( outfile, "wb+" ) as fp:
-            fp.write( self.dumpbin().encode( encoding ) )
-
-    def hash( self, encoding="latin-1" ):
+            fp.write( self.dumpbin().encode('latin-1') )
+    
+    def hash( self ):
 
         dump = self.dumpbin()
         if isinstance( dump, str ):
-            dump = dump.encode( encoding )
+            dump = dump.encode('latin-1')
 
         return hashlib.md5( dump ).hexdigest()
     
