@@ -1,0 +1,6 @@
+future
+numpy
+pillow
+scipy
+sphinx_git
+xmltodict
