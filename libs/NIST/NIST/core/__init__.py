@@ -462,8 +462,10 @@ class NIST( object ):
                 'ORI'
         """
         value = self.get_field( ( ntype, tagid ), idc )
-        
+
         if self.is_binary( ntype, tagid ):
+            if isinstance( value, bytes ):
+                value = value.decode( 'latin-1' )
             return bindump( value )
         
         if ntype in [ 3, 4, 5, 6 ] and tagid == 4:
@@ -1074,9 +1076,14 @@ class NIST( object ):
         idc = self.checkIDC( ntype, idc )
     
         try:
-            return self.data[ ntype ][ idc ][ tagid ]
-        except:
+            value = self.data[ ntype ][ idc ][ tagid ]
+        except Exception:
             return None
+
+        if self.is_binary( ntype, tagid ) and isinstance( value, str ):
+            return value.encode( 'latin-1' )
+
+        return value
     
     def set_field( self, tag, value, idc = -1 ):
         """
@@ -1133,7 +1140,10 @@ class NIST( object ):
             
             if ntype in [ 3, 4, 5, 6 ] and tagid == 4:
                 value = encode_fgp( value )
-                
+
+            if self.is_binary( ntype, tagid ) and isinstance( value, ( bytes, bytearray ) ):
+                value = value.decode( 'latin-1' )
+
             if not isinstance( value, str ):
                 value = str( value )
             
