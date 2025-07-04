@@ -4,7 +4,7 @@
 
 
 import zipfile
-from io import StringIO as io
+from io import BytesIO as io
 
 class ZipFileExtended( zipfile.ZipFile ):
     def removeFile( self, *filenames ):
