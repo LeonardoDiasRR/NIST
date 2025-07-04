@@ -25,6 +25,7 @@ faces = [
 new_nist.add_ntype(10)
 for index, face in enumerate(faces, start=1):
     with open(face, 'rb') as f:
+        # face_data = f.read().decode('latin-1')
         face_data = f.read()
         new_nist.set_field('10.999', face_data, idc=index)
 
@@ -42,7 +43,8 @@ new_nist.set_field('4.014', 'WSQ', idc=1)  # Image Compression Algorithm (ICA) [
 
 # Adiciona o dedo plegar direito (idc=1)
 with open(r'amostras/digitais/digital_1.wsq', 'rb') as f:
-    digital = f.read().decode('latin-1')
+    # digital = f.read().decode('latin-1')
+    digital = f.read()
     new_nist.set_field('4.999', digital, idc=1)
 
 # Salva o nist no disco
