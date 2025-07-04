@@ -5,7 +5,7 @@ SETLOCAL
 SET VENV_DIR=venv
 
 echo [1/5] Criando ambiente virtual em %VENV_DIR%...
-python3.12 -m venv %VENV_DIR%
+python -m venv %VENV_DIR%
 IF ERRORLEVEL 1 (
     echo Erro ao criar o ambiente virtual.
     EXIT /B 1
@@ -53,7 +53,7 @@ FOR %%L IN (NIST MDmisc PMlib WSQ) DO (
 
 :: Cria arquivo .pth apontando para as bibliotecas
 FOR /F "delims=" %%p IN ('python -c "import site; print(site.getsitepackages()[0])"') DO SET SITE_PACKAGES=%%p
-SET PTH_FILE=%SITE_PACKAGES%\mdedonno.pth
+SET %PTH_FILE%=%SITE_PACKAGES%\mdedonno.pth
 echo Criando %PTH_FILE%...
 ( 
     echo %CD%\libs\NIST

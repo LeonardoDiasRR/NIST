@@ -7,7 +7,7 @@ set -e
 VENV_DIR="./venv"
 
 echo "➡️ Criando ambiente virtual em $VENV_DIR..."
-python3.12 -m venv "$VENV_DIR"
+python3 -m venv "$VENV_DIR"
 
 echo "✅ Ambiente virtual criado."
 
