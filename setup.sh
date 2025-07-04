@@ -34,11 +34,15 @@ else
     echo "⚠️ Arquivo requirements.txt não encontrado. Nenhuma dependência instalada."
 fi
 
+# Diretório contendo as bibliotecas obrigatórias
+LIBS_DIR="./libs"
+
 # Instala dependências das bibliotecas auxiliares
 for lib in NIST MDmisc PMlib WSQ; do
-    if [ -f "$lib/requirements.txt" ]; then
-        echo "➡️ Instalando dependências de $lib/requirements.txt..."
-        pip install -r "$lib/requirements.txt"
+    LIB_PATH="$LIBS_DIR/$lib"
+    if [ -f "$LIB_PATH/requirements.txt" ]; then
+        echo "➡️ Instalando dependências de $LIB_PATH/requirements.txt..."
+        pip install -r "$LIB_PATH/requirements.txt"
     fi
 done
 
@@ -51,7 +55,12 @@ EOF
 PTH_FILE="$SITE_PACKAGES/mdedonno.pth"
 
 echo "➡️ Criando $PTH_FILE..."
-printf "%s\n" "$(pwd)/NIST" "$(pwd)/WSQ" "$(pwd)/PMlib" "$(pwd)/MDmisc" > "$PTH_FILE"
+printf "%s\n" \
+    "$(pwd)/libs/NIST" \
+    "$(pwd)/libs/WSQ" \
+    "$(pwd)/libs/PMlib" \
+    "$(pwd)/libs/MDmisc" \
+    > "$PTH_FILE"
 echo "✅ $PTH_FILE criado."
 
 echo "✅ Setup concluído com sucesso."
