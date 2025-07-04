@@ -9,4 +9,13 @@ The developpement and maintainance have been made by Marco De Donno, School of C
 
 .. [NIST2013] Data Format for the Interchange of Fingerprint, Facial & Other Biometric Information, NIST Special Publication 500-290 Rev1 (2013), https://www.nist.gov/itl/iad/image-group/ansinist-itl-standard-references
 
+Encoding
+========
+
+Earlier versions of this package decoded all text sections as ``UTF-8``.
+Some real-world NIST files contain byte values outside of that encoding,
+resulting in ``UnicodeDecodeError`` during parsing.  The library now uses
+``latin-1`` when reading, writing or hashing textual fields to preserve
+the original byte content.
+
 
