@@ -42,7 +42,7 @@ new_nist.set_field('4.014', 'WSQ', idc=1)  # Image Compression Algorithm (ICA) [
 
 # Adiciona o dedo plegar direito (idc=1)
 with open(r'amostras/digitais/digital_1.wsq', 'rb') as f:
-    digital = f.read()
+    digital = f.read().decode('latin-1')
     new_nist.set_field('4.999', digital, idc=1)
 
 # Salva o nist no disco
