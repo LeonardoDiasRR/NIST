@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: UTF-8 -*-
 
-import collections
+import collections.abc as collections
 import unicodedata
 
 def upper( data ):

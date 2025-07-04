@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: UTF-8 -*-
 
-import collections
 
 class edict( dict ):
     def reverse( self ):
