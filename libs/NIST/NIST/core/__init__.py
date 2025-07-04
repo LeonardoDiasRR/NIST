@@ -494,12 +494,12 @@ class NIST( object ):
                 >>> print( dump ) # doctest: +ELLIPSIS, +NORMALIZE_WHITESPACE
                 NIST Type-01
                     01.001 LEN: 00000349
-                    01.002 VER: 0500
+                    01.002 CHAR: UTF-8
                     01.003 CNT: 1<US>17<RS>2<US>0<RS>4<US>1<RS>9<US>10<RS>10<US>2<RS>13<US>1<RS>14<US>3<RS>15<US>4<RS>16<US>17<RS>17<US>5<RS>18<US>13<RS>19<US>16<RS>20<US>6<RS>20<US>7<RS>21<US>8<RS>21<US>9<RS>98<US>11<RS>99<US>12
                     01.004 TOT: A
                     01.005 DAT: 20120726
                     01.006 PRY: 9
-                    01.007 DAI: DAI
+                    01.007 VER: 0300
                     01.008 ORI: ORI
                     01.009 TCN: TCN
                     01.010 TCR: t15
@@ -556,12 +556,12 @@ class NIST( object ):
                 <BLANKLINE>
                 NIST Type-01
                     01.001 LEN: 00000349
-                    01.002 VER: 0500
+                    01.002 CHAR: UTF-8
                     01.003 CNT: 1<US>17<RS>2<US>0<RS>4<US>1<RS>9<US>10<RS>10<US>2<RS>13<US>1<RS>14<US>3<RS>15<US>4<RS>16<US>17<RS>17<US>5<RS>18<US>13<RS>19<US>16<RS>20<US>6<RS>20<US>7<RS>21<US>8<RS>21<US>9<RS>98<US>11<RS>99<US>12
                     01.004 TOT: A
                     01.005 DAT: 20120726
                     01.006 PRY: 9
-                    01.007 DAI: DAI
+                    01.007 VER: 0300
                     01.008 ORI: ORI
                     01.009 TCN: TCN
                     01.010 TCR: t15
@@ -1094,12 +1094,12 @@ class NIST( object ):
             
             Usage:
             
-                >>> sample_all_supported_types.set_field( "1.002", "0300" )
+                >>> sample_all_supported_types.set_field( "1.002", "UTF-8" )
                 >>> dump = sample_all_supported_types.dump_record( 1 )
                 >>> print( dump ) # doctest: +ELLIPSIS, +NORMALIZE_WHITESPACE
                 NIST Type-01
                     01.001 LEN: 00000349
-                    01.002 VER: 0300
+                    01.002 CHAR: UTF-8
                     01.003 CNT: 1<US>17<RS>2<US>0<RS>4<US>1<RS>9<US>10<RS>10<US>2<RS>13<US>1<RS>14<US>3<RS>15<US>4<RS>16<US>17<RS>17<US>5<RS>18<US>13<RS>19<US>16<RS>20<US>6<RS>20<US>7<RS>21<US>8<RS>21<US>9<RS>98<US>11<RS>99<US>12
                     01.004 TOT: A
                     ...
@@ -1325,7 +1325,10 @@ class NIST( object ):
         idc = 0
         
         self.add_default( ntype, idc )
-        
+
+        # Set mandatory header fields for Edition 3 (2015)
+        self.set_field( "1.002", "UTF-8", idc )
+        self.set_field( "1.007", "0300", idc )
         self.set_field( "1.005", self.date, idc )
         self.set_field( "1.008", default_origin, idc )
         self.set_field( "1.009", self.timestamp, idc )
@@ -1515,12 +1518,12 @@ class NIST( object ):
                 <BLANKLINE>
                 NIST Type-01
                     01.001 LEN: 00000264
-                    01.002 VER: 0500
+                    01.002 CHAR: UTF-8
                     01.003 CNT: 1<US>1<RS>2<US>0
                     01.004 TOT: A
                     01.005 DAT: 20120726
                     01.006 PRY: 9
-                    01.007 DAI: DAI
+                    01.007 VER: 0300
                     01.008 ORI: ORI
                     01.009 TCN: TCN
                     01.010 TCR: t15

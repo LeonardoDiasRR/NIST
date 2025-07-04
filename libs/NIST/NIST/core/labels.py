@@ -7,12 +7,12 @@
 LABEL = {
     1: {
         1:   ( 'LEN', 'Logical record length' ),
-        2:   ( 'VER', 'Version number' ),
+        2:   ( 'CHAR', 'Character encoding' ),
         3:   ( 'CNT', 'File content' ),
         4:   ( 'TOT', 'Type of transaction' ),
-        5:   ( 'DAT', 'Date' ),
-        6:   ( 'PRY', 'Priority' ),
-        7:   ( 'DAI', 'Destination agency identifier' ),
+        5:   ( 'DAI', 'Destination agency identifier' ),
+        6:   ( 'DAT', 'Date' ),
+        7:   ( 'VER', 'Version number' ),
         8:   ( 'ORI', 'Originating agency identifier' ),
         9:   ( 'TCN', 'Transaction control number' ),
         10:  ( 'TCR', 'Transaction control reference' ),
