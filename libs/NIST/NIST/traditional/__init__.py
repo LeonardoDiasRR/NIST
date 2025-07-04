@@ -260,11 +260,11 @@ class NIST( NIST_Core ):
             os.makedirs( os.path.dirname( os.path.realpath( outfile ) ) )
         
         with open( outfile, "wb+" ) as fp:
-            fp.write( self.dumpbin() )
+            fp.write( self.dumpbin().encode('latin-1') )
     
     def hash( self ):
 
-        return hashlib.md5( self.dumpbin() ).hexdigest()
+        return hashlib.md5( self.dumpbin().encode('latin-1') ).hexdigest()
     
     ############################################################################
     # 
