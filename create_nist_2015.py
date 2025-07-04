@@ -30,8 +30,8 @@ faces = [
 new_nist.add_ntype(10)
 for index, face in enumerate(faces, start=1):
     with open(face, 'rb') as f:
-        face = f.read()
-        new_nist.set_field('10.999', face, idc=index)
+        face_data = f.read().decode('latin-1')
+        new_nist.set_field('10.999', face_data, idc=index)
 
 # Digitais
 # new_nist.add_ntype(4)
