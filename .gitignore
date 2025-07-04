@@ -164,3 +164,7 @@ download/
 teste.py
 *.wsq
 *.jpg
+libs/MDmisc/requirements-mdmisc.txt
+libs/NIST/requirements-nist.txt
+libs/PMlib/requirements-pmlib.txt
+libs/WSQ/requirements-wsq.txt
