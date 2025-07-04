@@ -114,7 +114,8 @@ class _fuckit( types.ModuleType ):
         module, or a function.
         """ 
         import inspect
-        import imp
+        import importlib
+        import importlib.util
         import ast
         import types
         import sys
@@ -136,9 +137,15 @@ class _fuckit( types.ModuleType ):
                 exec( 'exec _code_ in _globs_, _locs_' )
 
         if isinstance( victim, basestring ):
-            sourcefile, pathname, ( _, _, module_type ) = imp.find_module( victim )
-            if module_type == imp.PY_SOURCE:
-                source = sourcefile.read()
+            try:
+                spec = importlib.util.find_spec( victim )
+            except ( ImportError, AttributeError ):
+                spec = None
+
+            if spec and spec.origin and spec.origin.endswith( '.py' ):
+                pathname = spec.origin
+                with open( pathname, 'r' ) as sourcefile:
+                    source = sourcefile.read()
                 # If we have the source, we can silence SyntaxErrors by
                 # compiling the module with more and more lines removed until
                 # it imports successfully.
@@ -163,7 +170,7 @@ class _fuckit( types.ModuleType ):
                 # If we don't have access to the source code, there's not much
                 # we can do to stop import-time errors.
                 try:
-                    module = __import__( victim )
+                    module = importlib.import_module( victim )
                 except Exception:
                     # If the module doesn't import at this point, it's
                     # obviously not worth using anyway, so just return an

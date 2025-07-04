@@ -319,7 +319,7 @@ class NIST( NIST_Core ):
         if ntype == 4:
             recordsize = 18
             
-            if self.data[ ntype ][ idc ].has_key( 999 ):
+            if 999 in self.data[ ntype ][ idc ]:
                 recordsize += len( self.data[ ntype ][ idc ][ 999 ] )
                 
         self.set_field( "%d.001" % ntype, "%d" % recordsize, idc )
