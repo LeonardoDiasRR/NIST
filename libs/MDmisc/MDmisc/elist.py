@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: UTF-8 -*-
 
-import collections
+from collections.abc import Iterable
 
 from .map_r import map_r
 
@@ -16,7 +16,7 @@ def replace_r( x, s, r ):
 
 def flatten( lst ):
     for e in lst:
-        if isinstance( e, collections.Iterable ) and not isinstance( e, str ):
+        if isinstance( e, Iterable ) and not isinstance( e, str ):
             for sublist in flatten( e ):
                 yield sublist
         else:
