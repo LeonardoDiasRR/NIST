@@ -24,7 +24,8 @@ pip install --upgrade pip
 
 echo "✅ pip atualizado."
 
-# Instala dependências
+
+# Instala dependências do projeto principal
 if [ -f "requirements.txt" ]; then
     echo "➡️ Instalando dependências de requirements.txt..."
     pip install -r requirements.txt
@@ -32,5 +33,25 @@ if [ -f "requirements.txt" ]; then
 else
     echo "⚠️ Arquivo requirements.txt não encontrado. Nenhuma dependência instalada."
 fi
+
+# Instala dependências das bibliotecas auxiliares
+for lib in NIST MDmisc PMlib WSQ; do
+    if [ -f "$lib/requirements.txt" ]; then
+        echo "➡️ Instalando dependências de $lib/requirements.txt..."
+        pip install -r "$lib/requirements.txt"
+    fi
+done
+
+# Cria arquivo .pth para tornar as bibliotecas visíveis ao Python
+SITE_PACKAGES=$(python - <<'EOF'
+import site
+print(site.getsitepackages()[0])
+EOF
+)
+PTH_FILE="$SITE_PACKAGES/mdedonno.pth"
+
+echo "➡️ Criando $PTH_FILE..."
+printf "%s\n" "$(pwd)/NIST" "$(pwd)/WSQ" "$(pwd)/PMlib" "$(pwd)/MDmisc" > "$PTH_FILE"
+echo "✅ $PTH_FILE criado."
 
 echo "✅ Setup concluído com sucesso."
