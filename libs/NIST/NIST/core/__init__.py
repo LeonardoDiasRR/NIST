@@ -23,7 +23,6 @@ from MDmisc.string import join, upper, stringIterator, split_r
 
 from .binary import binary_fields
 from .config import RS, US
-from .config import RS, US
 from .exceptions import *
 from .functions import bindump, default_origin, get_label, decode_fgp, encode_fgp
 from .voidType import voidType
