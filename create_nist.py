@@ -50,7 +50,7 @@ with open(r'amostras/digitais/digital_1.wsq', 'rb') as f:
 # Salva o nist no disco
 new_nist.write('novo_nist.nst')
 
-# print(new_nist)
+print(new_nist)
 
 print(f"Foto: {type(new_nist.get_field('10.999'))}")
 print(f"Digital: {type(new_nist.get_field('4.999'))}")
