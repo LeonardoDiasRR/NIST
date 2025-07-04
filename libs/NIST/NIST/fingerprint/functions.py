@@ -226,23 +226,30 @@ def changeFormatImage( input, outformat, **options ):
     if isinstance( input, Image.Image ):
         img = input
     
-    elif isinstance( input, str ):
+    elif isinstance( input, ( str, bytes, bytearray ) ):
+        if isinstance( input, str ):
+            data = input.encode( "latin-1" )
+        else:
+            data = bytes( input )
+
         try:
-            buff = BytesIO( input )
+            buff = BytesIO( data )
             img = Image.open( buff )
-            
+
             if img.format in [ "TGA" ]:
                 raise Exception
-        
-        except:
-            if string_to_hex( input[ 0 : 4 ] ) in [ "FFA0FFA4", "FFA0FFA5", "FFA0FFA6", "FFA0FFA2", "FFA0FFA8" ]:
-                img = RAWToPIL( WSQ().decode( input ), **options )
-                
+
+        except Exception:
+            header = string_to_hex( data[ 0 : 4 ].decode( "latin-1" ) )
+
+            if header in [ "FFA0FFA4", "FFA0FFA5", "FFA0FFA6", "FFA0FFA2", "FFA0FFA8" ]:
+                img = RAWToPIL( WSQ().decode( data ), **options )
+
             else:
                 if outformat == "RAW":
-                    return input
+                    return data
                 else:
-                    img = RAWToPIL( input, **options )
+                    img = RAWToPIL( data, **options )
     
     elif isinstance( input, IOBase ):
         img = Image.open( input )
