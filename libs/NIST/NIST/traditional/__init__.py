@@ -36,13 +36,13 @@ class NIST( NIST_Core ):
         elif isinstance( p, BytesIO ):
             data = p.getvalue()
             if isinstance( data, bytes ):
-                data = data.decode( 'latin-1' )
+                data = data.decode( 'utf-8' )
             self.load( data )
 
         elif isinstance( p, IOBase ):
             data = p.read()
             if isinstance( data, bytes ):
-                data = data.decode( 'latin-1' )
+                data = data.decode( 'utf-8' )
             self.load( data )
         
         elif isinstance( p, ( NIST, dict ) ):
@@ -74,7 +74,7 @@ class NIST( NIST_Core ):
         debug.debug( "Loading object" )
 
         if isinstance( data, bytes ):
-            data = data.decode( 'latin-1' )
+            data = data.decode( 'utf-8' )
         
         records = data.split( FS )
         
@@ -260,13 +260,13 @@ class NIST( NIST_Core ):
             os.makedirs( os.path.dirname( os.path.realpath( outfile ) ) )
         
         with open( outfile, "wb+" ) as fp:
-            fp.write( self.dumpbin().encode('latin-1') )
+            fp.write( self.dumpbin().encode('utf-8') )
     
     def hash( self ):
 
         dump = self.dumpbin()
         if isinstance( dump, str ):
-            dump = dump.encode('latin-1')
+            dump = dump.encode('utf-8')
 
         return hashlib.md5( dump ).hexdigest()
     
