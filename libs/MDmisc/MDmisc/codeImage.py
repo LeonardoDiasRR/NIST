@@ -12,8 +12,8 @@ def codeImage( data, image, size, limit = 250 ):
     
     try:
         i = 0
-        for y in range( 0, im.size[1] ):
-            for x in range( 0, im.size[0] ):
+        for y in xrange( 0, im.size[1] ):
+            for x in xrange( 0, im.size[0] ):
                 val = im.getpixel( ( x, y ) )
                 if val > limit:
                     str += " "

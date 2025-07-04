@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: UTF-8 -*-
 
-from . import doctester
+import doctester
 import os
 import subprocess
 import unittest

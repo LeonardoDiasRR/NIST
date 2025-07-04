@@ -20,16 +20,16 @@ class multiple_sample( object ):
         self.maxValue = maxValue
         self.number = number
         
-        self.lst = list(range( self.maxValue))
+        self.lst = xrange( self.maxValue )
         self.i = 0
         
     def __iter__( self ):
         return self
 
     def __next__( self ):
-        return next(self)
+        return self.next()
 
-    def __next__( self ):
+    def next( self ):
         if self.number != None and self.i >= self.number:
             raise StopIteration()
         else:
@@ -37,5 +37,5 @@ class multiple_sample( object ):
             return random.sample( self.lst, self.size )
     
     def __call__( self ):
-        return next(self)
+        return self.next()
     

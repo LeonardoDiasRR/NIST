@@ -1,9 +1,9 @@
 #!/usr/bin/python
 # -*- coding: UTF-8 -*-
 
+from __future__ import absolute_import, division
 
-
-from io import StringIO
+from cStringIO import StringIO
 from math import cos, pi, sin
 from PIL import Image, ImageDraw, ImageFont, ImageOps, ImageColor
 from scipy.spatial.qhull import ConvexHull
@@ -175,7 +175,7 @@ class NISTf( NIST_traditional ):
                 #        Type-9 logical record field descriptions. This field
                 #        shall contain a "U" to indicate that the minutiae are
                 #        formatted in vendor-specific or M1-378 terms
-                if any( x in [ 5, 6, 7, 8, 9, 10, 11, 12 ] for x in list(self.data[ 9 ][ idc ].keys()) ):
+                if any( x in [ 5, 6, 7, 8, 9, 10, 11, 12 ] for x in self.data[ 9 ][ idc ].keys() ):
                     debug.debug( "minutiae are formatted as specified by the standard Type-9 logical record field descriptions", 1 )
                     self.set_field( "9.004", "S", idc )
                 else:
@@ -264,11 +264,11 @@ class NISTf( NIST_traditional ):
             15: 13,
         }
         
-        if ntype not in list(fields.keys()):
+        if ntype not in fields.keys():
             raise notImplemented
         
         else:
-            idcs = list(self.data[ ntype ].keys())
+            idcs = self.data[ ntype ].keys()
             
             for idc in idcs:
                 fpc_candidate = self.get_field( ( ntype, fields[ ntype ] ), idc )
@@ -276,7 +276,7 @@ class NISTf( NIST_traditional ):
                 if ntype == 4:
                     fpc_candidate = decode_fgp( fpc_candidate )
                     fpc_candidate = fpc_candidate.split( "/" )
-                    fpc_candidate = list(map( int, fpc_candidate ))
+                    fpc_candidate = map( int, fpc_candidate )
                     
                     if int( fpc ) in fpc_candidate:
                         return idc
@@ -312,15 +312,15 @@ class NISTf( NIST_traditional ):
             15: 13,
         }
         
-        for ntype, fieldid in fields.items():
-            idcs = list(self.data[ ntype ].keys())
+        for ntype, fieldid in fields.iteritems():
+            idcs = self.data[ ntype ].keys()
             for idc in idcs:
                 fpc = self.get_field( ( ntype, fieldid ), idc )
                 
                 if ntype == 4:
                     fpc = decode_fgp( fpc ).split( "/" )
                     
-                if isinstance( fpc, list ):
+                if isinstance( fpc, ( list, ) ):
                     for f in fpc:
                         fpc_list.append( int( f ) )
                 
@@ -488,7 +488,7 @@ class NISTf( NIST_traditional ):
                 
             ret = []
             
-            for idc in range( 1, 11 ):
+            for idc in xrange( 1, 11 ):
                 try:
                     ret.append( self.get_minutiae( format = format, idc = idc ) )
                 except idcNotFound:
@@ -851,7 +851,7 @@ class NISTf( NIST_traditional ):
             data = [ format( data ) ]
         
         elif isinstance( data[ 0 ], ( Core, list, tuple ) ):
-            data = list(map( format, data ))
+            data = map( format, data )
         
         else:
             raise formatNotSupported
@@ -1072,7 +1072,7 @@ class NISTf( NIST_traditional ):
                     Minutia( i='3', x='18.59', y='24.0', t='96', q='00', d='D' )
                 ]
         """
-        tofilter = [ ( key, value ) for key, value in kwargs.items() ]
+        tofilter = [ ( key, value ) for key, value in kwargs.iteritems() ]
         if len( tofilter ) == 0:
             return self.get_minutiae( idc = idc )
         
@@ -1380,7 +1380,7 @@ class NISTf( NIST_traditional ):
                     
                     annotationLayer.paste( endcolor, ( int( cx - offsetx ), int( cy - offsety ) ), mask = markerminutia )
             
-            elif type == "minutiadata" or "variable" in list(options.keys()):
+            elif type == "minutiadata" or "variable" in options.keys():
                 fontfactor = options.get( "size", 1 )
                 font = ImageFont.truetype( "./fonts/arial.ttf", size = int( fontfactor * self.get_resolution( idc ) * 15 / 500 ) )
                 
@@ -1666,7 +1666,7 @@ class NISTf( NIST_traditional ):
                 b = height - b
                 d = height - d
                   
-                a, b, c, d = list(map( int, ( a, b, c, d ) ))
+                a, b, c, d = map( int, ( a, b, c, d ) )
                   
                 draw.line( ( a, b, c, d ), fill = ( 255, 0, 0 ), width = linewidth )
         except:
@@ -1952,7 +1952,7 @@ class NISTf( NIST_traditional ):
         
         unit = options.get( "unit", None )
         if unit == "mm":
-            size = [int( round( x / 25.4 * self.get_resolution( idc ) ) ) for x in size]
+            size = map( lambda x: int( round( x / 25.4 * self.get_resolution( idc ) ) ), size )
         
         if len( size ) == 4:
             a, b, c, d = size
@@ -1961,8 +1961,8 @@ class NISTf( NIST_traditional ):
         
         if center in [ None, [] ]:
             center = self.get_size( idc )
-            center = [int( 0.5 * x ) for x in center]
-            center = list(map( int, center ))
+            center = map( lambda x: int( 0.5 * x ), center )
+            center = map( int, center )
         else:
             if isinstance( center[ 0 ], list ):
                 center = center[ 0 ]
@@ -1970,7 +1970,7 @@ class NISTf( NIST_traditional ):
             cx, cy = mm2px( center, self.get_resolution( idc ) )
             cy = self.get_height( idc ) - cy
             center = ( cx, cy )
-            center = list(map( int, center ))
+            center = map( int, center )
         
         img = self.get_image( "PIL", idc )
         
@@ -1978,7 +1978,7 @@ class NISTf( NIST_traditional ):
         offset = tuple( map( int, offset ) )
         
         offsetmin = ( ( size[ 0 ] / 2 ) - center[ 0 ], ( -( self.get_height( idc ) + ( size[ 1 ] / 2 ) - center[ 1 ] - size[ 1 ] ) ) )
-        offsetmin = [x * 25.4 / self.get_resolution( idc ) for x in offsetmin]
+        offsetmin = map( lambda x: x * 25.4 / self.get_resolution( idc ), offsetmin )
         
         # Image cropping
         bg = options.get( "bg", 255 )
@@ -2577,7 +2577,7 @@ class NISTf( NIST_traditional ):
                 '8da4bdb447bfd07380e382e14d90453c'
         """
         maxh, maxw = ( 0, 0 )
-        for idc in range( 1, 11 ):
+        for idc in xrange( 1, 11 ):
             try:
                 w, h = self.get_size( idc )
                 maxw = max( maxw, w )
@@ -2597,7 +2597,7 @@ class NISTf( NIST_traditional ):
             
         ret = Image.new( mode, size, col )
         
-        for idc in range( 1, 11 ):
+        for idc in xrange( 1, 11 ):
             try:
                 if annotated:
                     img = self.get_print_annotated( idc )
@@ -2662,7 +2662,7 @@ class NISTf( NIST_traditional ):
             14: ( 2, 221, 75, 279 ),
         }
         
-        for fpc in range( 1, 15 ):
+        for fpc in xrange( 1, 15 ):
             try:
                 p = self.get_print( "PIL", fpc = fpc )
                 

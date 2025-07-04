@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: UTF-8 -*-
 
-from collections.abc import Mapping, Iterable
+import collections
 import unicodedata
 
 def upper( data ):
@@ -55,7 +55,7 @@ def join_r( c, lst = None ):
     
     if isinstance( c, ( list, tuple ) ):
         if isinstance( lst[ 0 ], ( list, tuple ) ):
-            lst = [join_r( c[ :-1 ], x ) for x in lst]
+            lst = map( lambda x: join_r( c[ :-1 ], x ), lst )
         
         try:
             last = c[ -1 ]
@@ -64,7 +64,7 @@ def join_r( c, lst = None ):
         
     elif isinstance( c, str ):
         if isinstance( lst[ 0 ], list ):
-            lst = [join_r( c, x ) for x in lst]
+            lst = map( lambda x: join_r( c, x ), lst )
             
         last = c
         
@@ -87,23 +87,18 @@ def split_r( lst, s ):
             [['1', '2', '3'], ['4', '5', '6'], ['7', '8', '9']]
     """
     try:
-        return [split_r( lst[ 1: ], x ) for x in s.split( lst[ 0 ] )]
+        return map( lambda x: split_r( lst[ 1: ], x ), s.split( lst[ 0 ] ) )
     except:
         return s
 
 class stringIterator( object ):
     def __init__( self, data ):
-
-        # Patch to Python3
-        # if isinstance(data, bytes):
-        #     data = data.decode('utf-8')
-
         self.data = data
         self.index = 0
         self.len = len( data )
         self.toend = self.len
         
-    def __next__( self ):
+    def next( self ):
         ret = self.data[ self.index ]
         self.index += 1
         self.toend -= 1
@@ -130,18 +125,17 @@ def split_no_empty( data, string ):
     """
     return [ value for value in data.split( string ) if value != "" ]
 
-
 def unicode2str( data ):
-    if isinstance( data, str ):
+    if type( data ) == str:
         return data
-
-    elif isinstance( data, bytes ):
-        return data.decode( 'utf-8', 'ignore' ).strip()
-
-    elif isinstance( data, Mapping ):
-        return dict( map( unicode2str, data.items() ) )
-
-    elif isinstance( data, Iterable ):
+     
+    elif type( data ) == unicode:
+        return str( data.encode( 'utf-8', 'ignore' ).strip() )
+    
+    elif isinstance( data, collections.Mapping ):
+        return dict( map( unicode2str, data.iteritems() ) )
+    
+    elif isinstance( data, collections.Iterable ):
         return type( data )( map( unicode2str, data ) )
     
     else:
@@ -149,7 +143,7 @@ def unicode2str( data ):
 
 def remove_accents( data, encodingin = 'ISO-8859-1', encodingout = 'ASCII' ):
     if isinstance( data, dict ):
-        for key, value in list(data.items()):
+        for key, value in data.iteritems():
             try:
                 data[ key ] = remove_accents( value, encodingin, encodingout )
             except TypeError:
@@ -157,6 +151,6 @@ def remove_accents( data, encodingin = 'ISO-8859-1', encodingout = 'ASCII' ):
         return data
     else:
         if isinstance( data, str ):
-            data = str( data, encodingin )
+            data = unicode( data, encodingin )
         
         return unicodedata.normalize( 'NFKD', data ).encode( encodingout, 'ignore' )

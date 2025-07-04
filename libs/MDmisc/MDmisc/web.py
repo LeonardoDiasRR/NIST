@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: UTF-8 -*-
 
-
+from __future__ import absolute_import
 
 from .string import split_r
 

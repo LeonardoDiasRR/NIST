@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: UTF-8 -*-
 
-
+from __future__ import print_function
 
 import ctypes
 import sys
@@ -16,14 +16,14 @@ def run_as_admin( argv = None, debug = False ):
         argv = sys.argv
     if hasattr( sys, '_MEIPASS' ):
         # Support pyinstaller wrapped program.
-        arguments = list(map( str, argv[1:] ))
+        arguments = map( unicode, argv[1:] )
     else:
-        arguments = list(map( str, argv ))
-    argument_line = ' '.join( arguments )
-    executable = str( sys.executable )
+        arguments = map( unicode, argv )
+    argument_line = u' '.join( arguments )
+    executable = unicode( sys.executable )
     if debug:
-        print(( 'Command line: ', executable, argument_line ))
-    ret = shell32.ShellExecuteW( None, "runas", executable, argument_line, None, 1 )
+        print( 'Command line: ', executable, argument_line )
+    ret = shell32.ShellExecuteW( None, u"runas", executable, argument_line, None, 1 )
     if int( ret ) <= 32:
         return False
     return None

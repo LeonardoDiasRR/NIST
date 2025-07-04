@@ -3,8 +3,8 @@
 
 from collections import OrderedDict, Counter
 from copy import deepcopy
-from io import StringIO
-
+from cStringIO import StringIO, InputType, OutputType
+from itertools import izip
 from math import sqrt
 from PIL import Image
 
@@ -153,7 +153,7 @@ def lstTo137( lst, res = None ):
             '1\\x1f154\\x1f138\\x1f290\\x1f0\\x1f100\\x1e2\\x1f271\\x1f301\\x1f155\\x1f0\\x1f100\\x1e3\\x1f225\\x1f439\\x1f224\\x1f0\\x1f100\\x1e4\\x1f445\\x1f495\\x1f194\\x1f0\\x1f100\\x1e5\\x1f137\\x1f166\\x1f153\\x1f0\\x1f100\\x1e6\\x1f247\\x1f391\\x1f346\\x1f0\\x1f100\\x1e7\\x1f387\\x1f389\\x1f111\\x1f0\\x1f100\\x1e8\\x1f242\\x1f76\\x1f147\\x1f0\\x1f100\\x1e9\\x1f273\\x1f281\\x1f330\\x1f0\\x1f100\\x1e10\\x1f304\\x1f442\\x1f271\\x1f0\\x1f100'
     """
     
-    if float in list(map( type, flatten( lst ) )) or res:
+    if float in map( type, flatten( lst ) ) or res:
         lst = [
             [ id, mm2px( x , res ), mm2px( y, res ), theta, q, d ]
             for id, x, y, theta, q, d in lst
@@ -245,7 +245,7 @@ def changeFormatImage( input, outformat, **options ):
                 else:
                     img = RAWToPIL( input, **options )
     
-    elif isinstance( input, StringIO ):
+    elif isinstance( input, ( OutputType, InputType ) ):
         img = Image.open( input )
     
     else:
@@ -370,7 +370,7 @@ def mm2px( data, res ):
             [250.0, 250.0]
     """
     if hasattr( data, '__iter__' ):
-        return [mm2px( x, res ) for x in data]
+        return map( lambda x: mm2px( x, res ), data )
     else:
         return data / 25.4 * float( res )
 
@@ -394,7 +394,7 @@ def px2mm( data, res ):
             [12.7, 12.7]
     """
     if hasattr( data, '__iter__' ):
-        return [px2mm( x, res ) for x in data]
+        return map( lambda x: px2mm( x, res ), data )
     else:
         return data / float( res ) * 25.4
 
@@ -451,11 +451,11 @@ class Annotation( object ):
         self.set_format( format = format )
         
         if kwargs:
-            self.set_format( format = list(kwargs.keys()) )
-            self._data = OrderedDict( iter(kwargs.items()) )
+            self.set_format( format = kwargs.keys() )
+            self._data = OrderedDict( kwargs.iteritems() )
         
         elif len( args ) != 0:
-            self._data = OrderedDict( zip( list( self._format ), args[ 0 ] ) )
+            self._data = OrderedDict( izip( list( self._format ), args[ 0 ] ) )
         
         else:
             self._data = OrderedDict( [] )
@@ -589,7 +589,7 @@ class Annotation( object ):
                 return self._data[ index ]
                 
             elif isinstance( index, int ):
-                return self._data[ list(self._data.keys())[ index ] ]
+                return self._data[ self._data.keys()[ index ] ]
             
         except KeyError:
             return None

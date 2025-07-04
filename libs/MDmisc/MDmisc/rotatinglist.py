@@ -34,15 +34,15 @@ class rotating_list( object ):
     def get_list( self ):
         return self.data
     
-    def __next__( self ):
+    def next( self ):
         d = self.data[ self.i ]
         self.i = ( self.i + 1 ) % len( self.data )
         return d
     
     def rnext( self ):
-        n = next(self)
+        n = self.next()
         if isinstance( n, rotating_list ):
-            return next(n)
+            return n.next()
         else:
             return n
     

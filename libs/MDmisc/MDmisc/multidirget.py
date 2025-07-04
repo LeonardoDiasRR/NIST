@@ -10,7 +10,7 @@ class multiDirGet():
         self.dirs = []
 
         if type( dirs ) == list:
-            list(map( self.addFolder, dirs ))
+            map( self.addFolder, dirs )
 
         elif type( dirs ) == str:
             self.addFolder( dirs )

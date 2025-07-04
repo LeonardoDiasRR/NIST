@@ -10,9 +10,9 @@ sys.path.insert( 0, os.path.abspath( "./" ) )
 # 
 ################################################################################
 
-project = 'NIST'
-copyright = '2016-2017, Marco De Donno'
-author = 'Marco De Donno'
+project = u'NIST'
+copyright = u'2016-2017, Marco De Donno'
+author = u'Marco De Donno'
 
 try:
     from version import __version__
@@ -77,8 +77,8 @@ latex_documents = [
    ( 
         master_doc,
         'NIST.tex',
-        'NIST Documentation',
-        'Marco De Donno',
+        u'NIST Documentation',
+        u'Marco De Donno',
         'howto'
     ),
 ]
@@ -95,7 +95,7 @@ man_pages = [
     ( 
         master_doc,
         'nist',
-        'NIST Documentation',
+        u'NIST Documentation',
         [author],
         1
     )

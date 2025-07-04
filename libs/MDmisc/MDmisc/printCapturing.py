@@ -1,4 +1,4 @@
-from io import StringIO
+from cStringIO import StringIO
 import sys
 
 class Capturing( list ):
@@ -10,3 +10,4 @@ class Capturing( list ):
     def __exit__( self, *args ):
         self.extend( self._stringio.getvalue().splitlines() )
         sys.stdout = self._stdout
+        

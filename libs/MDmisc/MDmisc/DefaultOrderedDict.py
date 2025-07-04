@@ -1,8 +1,7 @@
 #!/usr/bin/env python
 #  *-* coding: utf-8 *-*
 
-from collections import OrderedDict
-from collections.abc import Callable
+from collections import OrderedDict, Callable
 
 class DefaultOrderedDict( OrderedDict ):
     # Source: http://stackoverflow.com/a/6190500/562769
@@ -30,7 +29,7 @@ class DefaultOrderedDict( OrderedDict ):
             args = tuple()
         else:
             args = self.default_factory,
-        return type( self ), args, None, None, iter(list(self.items()))
+        return type( self ), args, None, None, self.iteritems()
 
     def copy( self ):
         return self.__copy__()
@@ -40,13 +39,13 @@ class DefaultOrderedDict( OrderedDict ):
 
     def __deepcopy__( self, memo ):
         import copy
-        return type( self )( self.default_factory, copy.deepcopy( list(self.items()) ) )
+        return type( self )( self.default_factory, copy.deepcopy( self.items() ) )
 
     def __repr__( self ):
         return 'DefaultOrderedDict(%s, %s)' % ( self.default_factory, OrderedDict.__repr__( self ) )
     
     def to_dict( self ):
-        for key, value in list(self.items()):
+        for key, value in self.iteritems():
             if isinstance( value, DefaultOrderedDict ):
                 self[ key ] = value.to_dict()
             

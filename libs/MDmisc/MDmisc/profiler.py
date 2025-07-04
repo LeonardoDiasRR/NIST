@@ -2,7 +2,7 @@
 #    Profiler
 ################################################################################
 
-
+from __future__ import print_function
 
 import functools 
 import time
@@ -35,4 +35,5 @@ class Timer:
         self.end = time.clock()
         self.interval = self.end - self.start
         
-        print(( "%-15s : %s" % ( self.desc, self.interval ) ))
+        print( "%-15s : %s" % ( self.desc, self.interval ) )
+        

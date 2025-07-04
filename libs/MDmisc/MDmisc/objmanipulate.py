@@ -2,37 +2,36 @@
 # -*- coding: UTF-8 -*-
 
 import base64
-from io import BytesIO
+from cStringIO import StringIO
 import gzip
 import pickle
 
 
 def objectToPickle( obj ):
-    fp = BytesIO()
+    fp = StringIO()
     pickle.dump( obj, fp )
-
+    
     return fp.getvalue()
 
 def pickleToObject( p ):
-    fp = BytesIO()
+    fp = StringIO()
     fp.write( p )
     fp.seek( 0 )
     
     return pickle.load( fp )
 
 def compress( obj ):
-    zip_text_file = BytesIO()
-
+    zip_text_file = StringIO()
+      
     zipper = gzip.GzipFile( mode = 'wb', fileobj = zip_text_file )
-
-    # obj is expected to be bytes
+      
     zipper.write( obj )
     zipper.close()
-
+      
     return base64.b64encode( zip_text_file.getvalue() )
 
 def decompress( data ):
-    sample_text_file = gzip.GzipFile( mode = 'rb', fileobj = BytesIO( base64.b64decode( data ) ) )
+    sample_text_file = gzip.GzipFile( mode = 'rb', fileobj = StringIO( base64.b64decode( data ) ) )
     ret = sample_text_file.read()
     sample_text_file.close()
     
@@ -45,5 +44,5 @@ def compressedToObject( data ):
     return pickleToObject( decompress( data ) )
 
 def decompressPickleFromFile( f ):
-    with open( f, 'rb' ) as fp:
+    with open( f ) as fp:
         return compressedToObject( fp.read() )

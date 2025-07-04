@@ -16,3 +16,4 @@ class object_binder( eobject ):
     def __iter__( self ):
         for a in self._data:
             yield a
+    

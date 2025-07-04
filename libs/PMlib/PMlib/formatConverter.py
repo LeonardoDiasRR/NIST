@@ -8,7 +8,7 @@ from .misc import matrixApply
 
 def cooPIL2NIST( data, height, res ):
     try:
-        return [cooPIL2NIST( x, height, res ) for x in data]
+        return map( lambda x: cooPIL2NIST( x, height, res ), data )
     
     except:
         return matrixApply( 
@@ -21,7 +21,7 @@ def cooPIL2NIST( data, height, res ):
 
 def cooNIST2PIL( data, height, res ):
     try:
-        return [cooNIST2PIL( x, height, res ) for x in data]
+        return map( lambda x: cooNIST2PIL( x, height, res ), data )
     
     except:
         return matrixApply( 

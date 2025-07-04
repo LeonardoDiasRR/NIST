@@ -4,12 +4,12 @@
 import doctest
 import unittest
 
-from .MDmisc import binary
-from .MDmisc import LaTeX
-from .MDmisc import multiple_sample
-from .MDmisc import numbers
-from .MDmisc import string
-from .MDmisc import xfrange
+from MDmisc import binary
+from MDmisc import LaTeX
+from MDmisc import multiple_sample
+from MDmisc import numbers
+from MDmisc import string
+from MDmisc import xfrange
 
 
 def MDmisctsets():

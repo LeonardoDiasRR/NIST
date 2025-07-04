@@ -76,7 +76,7 @@ def decode_gca( code ):
     if code in GCA:
         return GCA[ code ]
     
-    elif code in list(GCA.values()):
+    elif code in GCA.values():
         return code
     
     else:
@@ -155,7 +155,7 @@ def decode_fgp( code, only_first = False, separator = "/" ):
     code = int_to_bin( code, 6 * 8 )
     
     # Split in chunks of 8 bites
-    code = [ code[ i:i + 8 ] for i in range( 0, len( code ), 8 ) ]
+    code = [ code[ i:i + 8 ] for i in xrange( 0, len( code ), 8 ) ]
     
     # Convert each chunk to decimal
     code = [ bin_to_int( c ) for c in code ]
@@ -213,15 +213,15 @@ def encode_fgp( code, separator = "/" ):
             Exception: Value can not be bigger than 14
     """
     # Convert to string as needed, if not a iterable
-    if not isinstance( code, ( str, list, tuple ) ):
+    if not isinstance( code, ( str, list, tuple, ) ):
         code = str( code )
     
     # Split the string to a list, as needed
-    if not isinstance( code, ( list, tuple ) ):
+    if not isinstance( code, ( list, tuple, ) ):
         code = code.split( separator )
         
     # Cast all values to integer
-    code = list(map( int, code ))
+    code = map( int, code )
     
     # Check for the min (0) and max value (14)
     for v in code:
@@ -282,12 +282,8 @@ def bindump( data, n = 8 ):
             >>> bindump( data, 16 )
             '0001020304050607 ... F8F9FAFBFCFDFEFF (256 bytes)'
     """
-
-    if isinstance(data, bytes):
-        data = data.decode('iso-8859-1')
-
-    pre = [ data[ i ] for i in range( int(n / 2) ) ]
-    post = [ data[ -( i + 1 ) ] for i in range( int(n / 2) ) ]
+    pre = [ data[ i ] for i in xrange( n / 2 ) ]
+    post = [ data[ -( i + 1 ) ] for i in xrange( n / 2 ) ]
     
     pre = multimap( [ ord, hexformat ], pre )
     post = multimap( [ ord, hexformat ], post )
@@ -457,7 +453,7 @@ def printableFieldSeparator( data ):
     """
     rep = [ ( FS, '<FS>' ), ( GS, '<GS>' ), ( RS, '<RS>' ), ( US, '<US>' ) ]
     
-    if isinstance( data, str ):
+    if isinstance( data, ( str, ) ):
         for old, new in rep:
             data = data.replace( old, new )
     
@@ -475,4 +471,4 @@ def split( data, chunks_size ):
             >>> split( "000102030405060708090A0B0C0D0E", 4 )
             ['0001', '0203', '0405', '0607', '0809', '0A0B', '0C0D', '0E']
     """
-    return [ data[ start : start + chunks_size ] for start in range( 0, len( data ), chunks_size ) ]
+    return [ data[ start : start + chunks_size ] for start in xrange( 0, len( data ), chunks_size ) ]

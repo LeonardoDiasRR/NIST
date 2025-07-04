@@ -11,14 +11,6 @@ US = chr( 31 )
 CO = ':'
 DO = '.'
 
-# Patch to Python3
-# FS = chr( 28 ).encode('utf-8')
-# GS = chr( 29 ).encode('utf-8')
-# RS = chr( 30 ).encode('utf-8')
-# US = chr( 31 ).encode('utf-8')
-# CO = ':'.encode('utf-8')
-# DO = '.'.encode('utf-8')
-
 ################################################################################
 # 
 #    Default values

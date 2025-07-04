@@ -2,7 +2,7 @@
 # -*- coding: UTF-8 -*-
 
 from collections import OrderedDict
-from io import StringIO, IOBase
+import cStringIO
 import hashlib
 import os
 
@@ -13,7 +13,6 @@ from MDmisc.logger import debug
 from MDmisc.string import stringIterator, join
 
 from ..core import NIST as NIST_Core
-from ..core.config import FS, GS, RS, US
 from ..core.config import FS, GS, RS, US
 from ..core.functions import fieldSplitter, bindump, decode_gca, tagger, decode_fgp
 
@@ -27,35 +26,32 @@ class NIST( NIST_Core ):
             :param p: Input data to parse to NIST object.
             :type p: NIST or str
         """
-
-        if isinstance( p, str ):
+        if isinstance( p, ( str, unicode ) ):
             if ifany( [ FS, GS, RS, US ], p ):
-                self.load( p )                
+                self.load( p )
+                
             else:
                 self.read( p )
         
-        elif isinstance( p, ( StringIO ) ):
+        elif isinstance( p, ( cStringIO.OutputType ) ):
             self.load( p.getvalue() )
         
-        elif isinstance( p, ( bytes ) ):
-            self.load( p )
-        
-        elif isinstance( p, ( IOBase ) ):
+        elif isinstance( p, ( file ) ):
             self.load( p.read() )
         
         elif isinstance( p, ( NIST, dict ) ):
-            if isinstance( p, NIST ):                
+            if isinstance( p, NIST ):
                 p = p.data
             
-            for ntype, tmp in p.items():
+            for ntype, tmp in p.iteritems():
                 ntype = int( ntype )
                 self.add_ntype( ntype )
                 
-                for idc, tmp2 in tmp.items():
+                for idc, tmp2 in tmp.iteritems():
                     idc = int( idc )
                     self.add_idc( ntype, idc )
                     
-                    for tagid, value in tmp2.items():
+                    for tagid, value in tmp2.iteritems():
                         tagid = int( tagid )
                         
                         self.set_field( ( ntype, tagid ), value, idc )
@@ -70,10 +66,6 @@ class NIST( NIST_Core ):
             :type data: str
         """
         debug.debug( "Loading object" )
-
-        # Decode bytes to str
-        if isinstance(data, bytes):
-            data = data.decode('iso-8859-1')
         
         records = data.split( FS )
         
@@ -242,9 +234,9 @@ class NIST( NIST_Core ):
                     outnist.append( self.data[ ntype ][ idc ][ 999 ] )
                 else:
                     od = OrderedDict( sorted( self.data[ ntype ][ idc ].items() ) )
-                    outnist.append( join( GS, [ tagger( ntype, tagid ) + value for tagid, value in od.items() ] ) + FS )
+                    outnist.append( join( GS, [ tagger( ntype, tagid ) + value for tagid, value in od.iteritems() ] ) + FS )
         
-        return ("".join( outnist )).encode('iso-8859-1')
+        return "".join( outnist )
 
     def write( self, outfile ):
         """
@@ -262,7 +254,7 @@ class NIST( NIST_Core ):
             fp.write( self.dumpbin() )
     
     def hash( self ):
-        
+
         return hashlib.md5( self.dumpbin() ).hexdigest()
     
     ############################################################################
@@ -305,7 +297,7 @@ class NIST( NIST_Core ):
         # Iteration over all IDC
         debug.debug( "Iterate over fields in the IDC-%d" % idc, 1 )
         recordsize = 0
-        for tagid, value in self.data[ ntype ][ idc ].items():
+        for tagid, value in self.data[ ntype ][ idc ].iteritems():
             recordsize += len( value ) + lentag
             debug.debug( "Field %d.%03d : added % 9d to the recordsize (now %d)" % ( ntype, tagid, len( value ) + lentag, recordsize ), 2 )
         
@@ -327,7 +319,7 @@ class NIST( NIST_Core ):
         if ntype == 4:
             recordsize = 18
             
-            if 999 in self.data[ ntype ][ idc ]:
+            if self.data[ ntype ][ idc ].has_key( 999 ):
                 recordsize += len( self.data[ ntype ][ idc ][ 999 ] )
                 
         self.set_field( "%d.001" % ntype, "%d" % recordsize, idc )

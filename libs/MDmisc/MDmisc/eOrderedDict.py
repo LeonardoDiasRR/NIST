@@ -18,7 +18,7 @@ def eOrderedDictParser( obj ):
     if isinstance( obj, OrderedDict ):
         obj.__class__ = eOrderedDict
         
-        for i, ( k, v ) in enumerate( obj.items() ):
+        for i, ( k, v ) in enumerate( obj.iteritems() ):
             eOrderedDictParser( v )
     
     elif isinstance( obj, list ):

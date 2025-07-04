@@ -28,8 +28,6 @@ from .functions import bindump, default_origin, get_label, decode_fgp, encode_fg
 from .voidType import voidType
 from ..core.functions import leveler, printableFieldSeparator, split, tagSplitter
 
-from .exceptions import ntypeNotFound
-
 ################################################################################
 # 
 #    NIST object class
@@ -173,9 +171,6 @@ class NIST( object ):
     
         with open( infile, "rb" ) as fp:
             data = fp.read()
-
-        # Patch to Python3
-        data = data.decode('iso-8859-1')
         
         if data[ 0 ] == "{" and data[ -1 ] == "}":
             self.from_json( data )
@@ -203,7 +198,7 @@ class NIST( object ):
                 [2, 4, 7, 8, 9, 10, 13, 14, 15, 16, 17, 18, 19, 20, 20, 21, 21, 98, 99]
         """
         try:
-            data = [list(map( int, x.split( US ) )) for x in data.split( RS )]
+            data = map( lambda x: map( int, x.split( US ) ), data.split( RS ) )
         except:
             data = replace_r( split_r( [ RS, US ], data ), '', '1' )
             data = map_r( int, data )
@@ -229,7 +224,7 @@ class NIST( object ):
         """
         for ntype in b.get_ntype():
             for idc in b.get_idc( ntype ):
-                for tagid, value in b.data[ ntype ][ idc ].items():
+                for tagid, value in b.data[ ntype ][ idc ].iteritems():
                     self.data[ ntype ][ idc ][ tagid ] = value
         
         self.clean()
@@ -255,7 +250,7 @@ class NIST( object ):
         for ntype in other.get_ntype():
             if ntype != 1:
                 for idc in other.get_idc( ntype ):
-                    if idc in ret.data[ ntype ] and not update:
+                    if ret.data[ ntype ].has_key( idc ) and not update:
                         if ignore:
                             continue
                         else:
@@ -268,7 +263,7 @@ class NIST( object ):
                         if not idc in self.get_idc( ntype ):
                             ret.add_idc( ntype, idc )
                         
-                        for tagid, value in other.data[ ntype ][ idc ].items():
+                        for tagid, value in other.data[ ntype ][ idc ].iteritems():
                             ret.set_field( ( ntype, tagid ), value, idc )
         
         return ret
@@ -345,7 +340,7 @@ class NIST( object ):
             
             :raise ntypeNotFound: if the ntype is not present in the NIST object
         """
-        if ntype in self.data:
+        if self.data.has_key( ntype ):
             del( self.data[ ntype ] )
         else:
             raise ntypeNotFound
@@ -362,7 +357,7 @@ class NIST( object ):
             
             :raise idcNotFound: if the IDC for the ntype is not present in the NIST object
         """
-        if ntype in self.data and idc in self.data[ ntype ]:
+        if self.data.has_key( ntype ) and self.data[ ntype ].has_key( idc ):
             del( self.data[ ntype ][ idc ] )
         else:
             raise idcNotFound
@@ -383,7 +378,7 @@ class NIST( object ):
         
         idc = self.checkIDC( ntype, idc )
         
-        if ntype in self.data and idc in self.data[ ntype ]:
+        if self.data.has_key( ntype ) and self.data[ ntype ].has_key( idc ):
             del( self.data[ ntype ][ idc ][ tagid ] )
         else:
             raise tagNotFound
@@ -520,7 +515,7 @@ class NIST( object ):
         else:
             ret.append( "NIST Type-%02d" % ntype )
                 
-        for tagid, value in iter( sorted( d.items() ) ):
+        for tagid, value in iter( sorted( d.iteritems() ) ):
             lab = get_label( ntype, tagid, fullname )
             header = "%02d.%03d %s" % ( ntype, tagid, lab )
             
@@ -964,15 +959,15 @@ class NIST( object ):
         
         self.data = defDict()
         
-        for ntype, idcs in data.items():
+        for ntype, idcs in data.iteritems():
             ntype = int( ntype )
             self.add_ntype( ntype )
              
-            for idc, tagids in idcs.items():
+            for idc, tagids in idcs.iteritems():
                 idc = int( idc )
                 self.add_idc( ntype, idc )
                  
-                for tagid, value in tagids.items():
+                for tagid, value in tagids.iteritems():
                     tagid = int( tagid )
                     
                     if self.is_binary( ntype, tagid ):
@@ -1005,10 +1000,10 @@ class NIST( object ):
         
         #     Delete all empty data.
         for ntype in self.get_ntype():
-            for idc in list(self.data[ ntype ].keys()):
+            for idc in self.data[ ntype ].keys():
                 
                 #    Fields
-                for tagid in list(self.data[ ntype ][ idc ].keys()):
+                for tagid in self.data[ ntype ][ idc ].keys():
                     value = self.get_field( "%d.%03d" % ( ntype, tagid ), idc )
                     if value == "" or value == None:
                         debug.debug( "Field %02d.%03d IDC %d deleted" % ( ntype, tagid, idc ), 1 )
@@ -1070,14 +1065,10 @@ class NIST( object ):
                 '0500'
         """
         ntype, tagid = tagSplitter( tag )
-
+        
         idc = self.checkIDC( ntype, idc )
-
+    
         try:
-            if self.is_binary(ntype=ntype, tagid=tagid):
-                binary_data = self.data[ ntype ][ idc ][ tagid ]
-                return binary_data.encode('iso-8859-1')
-
             return self.data[ ntype ][ idc ][ tagid ]
         except:
             return None
@@ -1138,11 +1129,7 @@ class NIST( object ):
             if ntype in [ 3, 4, 5, 6 ] and tagid == 4:
                 value = encode_fgp( value )
                 
-            # Patch to Python3
-            if isinstance( value, bytes):
-                value = value.decode('iso-8859-1')
-            
-            elif not isinstance( value, str ):
+            if not isinstance( value, str ):
                 value = str( value )
             
             if len( value ) == 0:
@@ -1387,7 +1374,7 @@ class NIST( object ):
                 Traceback (most recent call last):
                 ntypeNotFound
         """
-        if ntype not in list(self.data.keys()):
+        if ntype not in self.data.keys():
             raise ntypeNotFound
         else:
             return sorted( self.data[ ntype ].keys() )
@@ -1429,9 +1416,9 @@ class NIST( object ):
                 [(1, 0, 1), (1, 0, 2), (1, 0, 3), (1, 0, 4), (1, 0, 5), (1, 0, 6), (1, 0, 7), (1, 0, 8), (1, 0, 9), (1, 0, 10), (1, 0, 11), (1, 0, 12), (1, 0, 13), (1, 0, 14), (1, 0, 15), (1, 0, 16), (1, 0, 17), (2, 0, 1), (2, 0, 2)]
         """
         lst = []
-        for ntype, idcs in self.data.items():
-            for idc, tagids in idcs.items():
-                for tagid in list(tagids.keys()):
+        for ntype, idcs in self.data.iteritems():
+            for idc, tagids in idcs.iteritems():
+                for tagid in tagids.keys():
                     lst.append( ( ntype, idc, tagid ) )
         
         return lst

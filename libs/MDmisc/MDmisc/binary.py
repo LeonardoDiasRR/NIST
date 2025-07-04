@@ -27,10 +27,9 @@ def int_to_bin( x, digits = 0 ):
         >>> int_to_bin( 1337, 32 )
         '00000000000000000000010100111001'
     """
-    
+
     oct2bin = [ '000', '001', '010', '011', '100', '101', '110', '111' ] 
-    # binstring = [ oct2bin[int( n )] for n in oct( x ) ]
-    binstring = [ oct2bin[int( n )] for n in '0' + oct( x )[2:] ]  # Patch for Python 3
+    binstring = [ oct2bin[int( n )] for n in oct( x ) ]
     binstring = ''.join( binstring ).lstrip( '0' )
     
     if digits == 'up':
@@ -73,7 +72,7 @@ def int_to_bytes( n, minlen = 0 ):
     nbytes = ( nbits + 7 ) / 8
     bytes = []
     
-    for i in range( int(nbytes) ):
+    for i in range( nbytes ):
         bytes.append( chr( n & 0xff ) )
         n >>= 8
     
@@ -108,7 +107,7 @@ def int_to_binstring( data, digits = 'up' ):
     
     iterbyte = stringIterator( b )
     
-    return join( [ chr( bin_to_int( iterbyte.take( 8 ) ) ) for _ in range( int(nbites) ) ] )
+    return join( [ chr( bin_to_int( iterbyte.take( 8 ) ) ) for _ in xrange( nbites ) ] )
 
 def string_to_hex( value ):
     return join( multimap( [ ord, myhex ], value ) )
@@ -128,10 +127,10 @@ def hex_to_int( x ):
 def bindump( data ):
     ret = [ "Offset    00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F    ASCII", "-" * 77 ]
     
-    for offset in range( 0, len( data ), 16 ):
+    for offset in xrange( 0, len( data ), 16 ):
         tmpbin = []
         tmpascii = []
-        for col in range( 0, 16 ):
+        for col in xrange( 0, 16 ):
             try:
                 c = data[ offset + col ]
                 tmpbin.append( myhex( ord( c ) ) )

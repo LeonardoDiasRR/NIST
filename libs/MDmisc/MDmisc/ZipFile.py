@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: UTF-8 -*-
 
-
+from __future__ import print_function
 
 import zipfile
-from io import BytesIO as io
+from cStringIO import StringIO as io
 
 class ZipFileExtended( zipfile.ZipFile ):
     def removeFile( self, *filenames ):
@@ -35,3 +35,4 @@ class ZipFileExtended( zipfile.ZipFile ):
         
         with open( outputfile, "wb+" ) as fp:
             fp.write( self.fp.getvalue() )
+    

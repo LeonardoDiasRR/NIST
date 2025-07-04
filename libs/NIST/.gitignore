@@ -1,0 +1,11 @@
+*.jpeg
+*.pyc
+NIST.egg-info/
+build/
+dist/
+NIST/version.py
+NISTold/
+doc/_build/*
+doc/version.py
+*.orig
+tests/

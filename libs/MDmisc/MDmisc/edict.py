@@ -6,8 +6,8 @@ import collections
 class edict( dict ):
     def reverse( self ):
         d = {}
-        for key, value in list(self.items()):
-            if value in d:
+        for key, value in self.iteritems():
+            if d.has_key( value ):
                 if type( d[ value ] ) != list:
                     d[ value ] = [ d[ value ] ]
                     
@@ -18,7 +18,7 @@ class edict( dict ):
         return d
     
     def search( self, searched ):
-        for key, value in list(self.items()):
+        for key, value in self.iteritems():
             if value == searched:
                 return key
         
@@ -29,12 +29,12 @@ class edict( dict ):
         return [ self.get( key ) for key in lst ]
     
     def get_r( self, path, split = "/" ):
-        if isinstance( path, str ):
+        if isinstance( path, ( str, unicode ) ):
             path = path.split( split )
         
         tmp = self
         for key in path:
-            if key in list(tmp.keys()):
+            if key in tmp.keys():
                 tmp = tmp.get( key )
             else:
                 error = "'%s' key not found" % key

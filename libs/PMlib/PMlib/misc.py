@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: UTF-8 -*-
 
-
+from __future__ import division
 
 import numpy as np
 
@@ -15,15 +15,15 @@ from MDmisc.elist import rotate, flatten
 ################################################################################
 
 def medianXY( data ):
-    x, y = list(zip( *data ))
+    x, y = zip( *data )
     return np.median( x ), np.median( y )
 
 def meanXY( data ):
-    x, y = list(zip( *data ))
+    x, y = zip( *data )
     return np.mean( x ), np.mean( y )
 
 def minmaxXY( data ):
-    return [( max( a ) + min( a ) ) / 2 for a in zip( *data )]
+    return map( lambda a: ( max( a ) + min( a ) ) / 2, zip( *data ) )
 
 ################################################################################
 #    Matrix manipulation
@@ -79,7 +79,7 @@ def shift_point( point, delta, revert = False ):
     point = list( point )
     r = -1 if revert else 1
     
-    for i in range( len( delta ) ):
+    for i in xrange( len( delta ) ):
         point[ i ] += r * delta[ i ]
     
     return point
@@ -110,7 +110,7 @@ def points_density( points ):
     
 def polygon_area( corners ):
     area = 0
-    x, y = list(zip( *corners ))
+    x, y = zip( *corners )
     for x, y1, y2 in zip( x, rotate( y, 1 ), rotate( y, -1 ) ):
         area += x * ( y1 - y2 )
     

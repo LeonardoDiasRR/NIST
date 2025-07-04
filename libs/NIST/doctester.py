@@ -6,13 +6,13 @@ import doctest
 import sys
 import unittest
 
-from . import NIST.core.__init__
-from . import NIST.core.functions
+import NIST.core.__init__
+import NIST.core.functions
 
-from . import NIST.traditional.__init__
+import NIST.traditional.__init__
 
-from . import NIST.fingerprint.__init__
-from . import NIST.fingerprint.functions
+import NIST.fingerprint.__init__
+import NIST.fingerprint.functions
 
 def NISTtests():
     tests = unittest.TestSuite()

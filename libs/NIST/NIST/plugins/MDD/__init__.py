@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: UTF-8 -*-
 
-
+from __future__ import division
 
 from _collections import defaultdict
 from PIL import Image
@@ -362,7 +362,7 @@ class NIST_MDD( NISTf ):
                 
             ret = []
             
-            for idc in range( 1, 11 ):
+            for idc in xrange( 1, 11 ):
                 try:
                     ret.append( self.get_minutiae_paired( format = format, idc = idc ) )
                 except idcNotFound:

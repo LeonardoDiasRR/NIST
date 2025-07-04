@@ -55,7 +55,7 @@ The structure of the files should be as follows:
 
 .. code-block:: bash
 
-   $ cat /usr/local/lib/python3.x/dist-packages/mdedonno.pth
+   $ cat /usr/local/lib/python2.7/dist-packages/mdedonno.pth
    /library/NIST
    /library/WSQ
    /library/PMlib

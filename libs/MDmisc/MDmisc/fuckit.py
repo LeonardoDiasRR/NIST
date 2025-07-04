@@ -124,18 +124,18 @@ class _fuckit( types.ModuleType ):
 
         PY3 = sys.version_info[0] == 3
         if PY3:
-            str = str
+            basestring = str
             get_func_code = lambda f: f.__code__
             exec_ = __builtins__['exec']
-            type = type
+            types.ClassType = type
         else:
-            str = __builtins__['basestring']
-            get_func_code = lambda f: f.__code__
+            basestring = __builtins__['basestring']
+            get_func_code = lambda f: f.func_code
             def exec_( _code_, _globs_ ):
                 _locs_ = _globs_
                 exec( 'exec _code_ in _globs_, _locs_' )
 
-        if isinstance( victim, str ):
+        if isinstance( victim, basestring ):
             sourcefile, pathname, ( _, _, module_type ) = imp.find_module( victim )
             if module_type == imp.PY_SOURCE:
                 source = sourcefile.read()
@@ -198,13 +198,13 @@ class _fuckit( types.ModuleType ):
                 return namespace[victim.__name__]
         elif isinstance( victim, types.ModuleType ):
             # Allow chaining of fuckit import calls
-            for name, obj in list(victim.__dict__.items()):
+            for name, obj in victim.__dict__.items():
                 if inspect.isfunction( obj ) or inspect.ismethod( obj ):
                     victim.__dict__[name] = self( obj )
             return victim
-        elif isinstance( victim, type ):
-            for name, member in list(victim.__dict__.items()):
-                if isinstance( member, ( type, types.FunctionType,
+        elif isinstance( victim, ( types.ClassType, type ) ):
+            for name, member in victim.__dict__.items():
+                if isinstance( member, ( type, types.ClassType, types.FunctionType,
                                        types.LambdaType, types.MethodType ) ):
                     setattr( victim, name, self( member ) )
             return victim
