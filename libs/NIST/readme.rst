@@ -24,4 +24,7 @@ internal ``latin-1`` representation automatically.  Accessing these
 fields via ``get_field`` returns the original ``bytes`` object so callers
 no longer need to manually encode or decode the data.
 
+Textual fields retrieved through :func:`get_field` are automatically
+converted from their internal ``latin-1`` representation to ``UTF-8``.
+
 

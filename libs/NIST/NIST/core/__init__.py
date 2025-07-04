@@ -1083,6 +1083,15 @@ class NIST( object ):
         if self.is_binary( ntype, tagid ) and isinstance( value, str ):
             return value.encode( 'latin-1' )
 
+        # Convert textual fields from the internal latin-1 representation to
+        # UTF-8 when exposing them to callers.  Any invalid byte sequence is
+        # replaced to avoid ``UnicodeDecodeError``.
+        if isinstance( value, str ):
+            try:
+                value = value.encode('latin-1').decode('utf-8')
+            except UnicodeDecodeError:
+                value = value.encode('latin-1').decode('utf-8', 'replace')
+
         return value
     
     def set_field( self, tag, value, idc = -1 ):
