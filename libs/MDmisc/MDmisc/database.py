@@ -7,7 +7,7 @@ from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
 import psycopg2.extras
 
 def urlsplit( url ):
-    data = re.match( '((?P<protocol>[^:]+)://)((?P<user>[^:]+)?(:(?P<password>[^@]+))?)?@(?P<host>[^:/]+)(:(?P<port>\d+))?(/(?P<database>[^&]+))?', url )
+    data = re.match(r'((?P<protocol>[^:]+)://)((?P<user>[^:]+)?(:(?P<password>[^@]+))?)?@(?P<host>[^:/]+)(:(?P<port>\d+))?(/(?P<database>[^&]+))?', url)
     return dict( [ ( key, data.group( key ) ) for key in [ 'user', 'password', 'host', 'port', 'database' ] ] )
 
 class Database( object ):
