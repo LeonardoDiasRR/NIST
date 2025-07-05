@@ -69,6 +69,11 @@
 from .fingerprint import NISTf
 from .traditional import NIST
 
+__all__ = [
+    'NISTf',
+    'NIST'
+]
+
 
 try:
     from .version import __version__
