@@ -74,3 +74,6 @@ if __name__ == "__main__":
     fill_random_fields(nist)
 
     print("Created NIST with types:", nist.get_ntype())
+
+    nist.write('created_all_types_nist_example.nst')
+    # print(nist)

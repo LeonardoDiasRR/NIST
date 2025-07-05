@@ -168,3 +168,5 @@ libs/PMlib/requirements-pmlib.txt
 libs/WSQ/requirements-wsq.txt
 novo_nist.nst
 saved_loaded_nist.nst
+new_nist_example.nst
+created_all_types_nist_example.nst
