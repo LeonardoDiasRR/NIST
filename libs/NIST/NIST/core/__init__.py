@@ -544,7 +544,7 @@ class NIST( object ):
             field = self.format_field( ntype, tagid, idc )
             if maxwidth != None:
                 field = printableFieldSeparator( field )
-                field = "\n                ".join( textwrap.wrap( field, int( maxwidth ) ) )
+                field = "\n                ".join( textwrap.wrap( field, int( maxwidth ) ) ) # type: ignore
             
             debug.debug( "%s: %s" % ( header, field ), 2 )
             ret.append( leveler( "%s: %s" % ( header, field ), 1 ) )

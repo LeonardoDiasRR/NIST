@@ -6,4 +6,4 @@ if __name__ == '__main__':
     mynist = NIST(sample_path)
     print(mynist)
 
-    # mynist.write('load_nist.nst')
+    mynist.write('saved_loaded_nist_example.nst')

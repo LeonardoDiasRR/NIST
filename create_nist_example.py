@@ -48,9 +48,6 @@ with open(r'amostras/digitais/digital_1.wsq', 'rb') as f:
     new_nist.set_field('4.999', digital, idc=1)
 
 # Salva o nist no disco
-new_nist.write('novo_nist.nst')
+new_nist.write('new_nist_example.nst')
 
 print(new_nist)
-
-print(f"Foto: {type(new_nist.get_field('10.999'))}")
-print(f"Digital: {type(new_nist.get_field('4.999'))}")
