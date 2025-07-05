@@ -40,6 +40,6 @@ def git_version( wd = "./", name = None, **options ):
 
 def git_describe_split( describe ):
     try:
-        return re.match( "^(.*)-([\d]+)-g([^-]*)(-(.*))?", describe ).groups()
+        return re.match(r"^(.*)-(\d+)-g([^-]*)(-(.*))?", describe).groups()
     except:
         return None
