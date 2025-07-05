@@ -37,17 +37,19 @@ def fill_random_fields(nist):
 
 
 if __name__ == "__main__":
+    
     nist = NISTf()
     nist.add_Type01()
     nist.add_Type02()
 
     nist.add_Type04()
     nist.set_field("4.999", os.urandom(10), 1)
-    from NIST.fingerprint.functions import AnnotationList
-    nist.add_Type09()
-    m = AnnotationList()
-    m.from_list([[1, 1.0, 1.0, 0, 0, 'A']], format="ixytqd", type="Minutia")
-    nist.set_minutiae(m, 0)
+
+    # from NIST.fingerprint.functions import AnnotationList
+    # nist.add_Type09()
+    # m = AnnotationList()
+    # m.from_list([[1, 1.0, 1.0, 0, 0, 'A']], format="ixytqd", type="Minutia")
+    # nist.set_minutiae(m, 0)
     nist.add_Type13()
     nist.set_field("13.999", os.urandom(10), 0)
     nist.add_Type14()
@@ -75,5 +77,11 @@ if __name__ == "__main__":
 
     print("Created NIST with types:", nist.get_ntype())
 
-    nist.write('created_all_types_nist_example.nst')
-    # print(nist)
+    print(nist)
+
+    nist.write('created_all_types_nist_example.nst')    
+    print('Nist salvo no disco.')
+    
+
+    
+    
