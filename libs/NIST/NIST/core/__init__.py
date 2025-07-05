@@ -56,6 +56,21 @@ class NIST( object ):
         :cvar datetime date: Creation date (YYYY-mm-dd).
         :cvar int timestamp: creation timestamp (UNIX time).
     """
+    def load_auto( self, p ):
+        """Abstract method to automatically load ``p`` into the object.
+
+            Subclasses must implement detection of the input type and delegate
+            to :py:meth:`load` or :py:meth:`read` accordingly.
+        """
+        raise NotImplementedError( "Subclasses must implement load_auto()" )
+
+    def load( self, data ):
+        """Abstract method to parse raw ``data`` and populate fields."""
+        raise NotImplementedError( "Subclasses must implement load()" )
+
+    def hash( self ):
+        """Abstract method returning a hash of the NIST contents."""
+        raise NotImplementedError( "Subclasses must implement hash()" )
     def __init__( self, init = None, *args, **kwargs ):
         """
             Initialization of the NIST Object.
