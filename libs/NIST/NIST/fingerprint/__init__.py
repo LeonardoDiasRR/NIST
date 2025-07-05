@@ -3021,7 +3021,95 @@ class NISTf( NIST_traditional ):
         
         else:
             self.add_default( ntype, idc )
-    
+
+    def add_Type16( self, idc = 0, **options ):
+        """Add a Type-16 record to the NIST object."""
+        ntype = 16
+
+        if isinstance( idc, list ):
+            for i in idc:
+                self.add_default( ntype, i )
+        else:
+            self.add_default( ntype, idc )
+            self.set_field( "16.005", self.date, idc )
+            self.set_field( "16.004", default_origin, idc )
+
+    def add_Type17( self, idc = 0, **options ):
+        """Add a Type-17 record to the NIST object."""
+        ntype = 17
+
+        if isinstance( idc, list ):
+            for i in idc:
+                self.add_default( ntype, i )
+        else:
+            self.add_default( ntype, idc )
+            self.set_field( "17.005", self.date, idc )
+            self.set_field( "17.004", default_origin, idc )
+
+    def add_Type18( self, idc = 0, **options ):
+        """Add a Type-18 record to the NIST object."""
+        ntype = 18
+
+        if isinstance( idc, list ):
+            for i in idc:
+                self.add_default( ntype, i )
+        else:
+            self.add_default( ntype, idc )
+
+    def add_Type19( self, idc = 0, **options ):
+        """Add a Type-19 record to the NIST object."""
+        ntype = 19
+
+        if isinstance( idc, list ):
+            for i in idc:
+                self.add_default( ntype, i )
+        else:
+            self.add_default( ntype, idc )
+            self.set_field( "19.005", self.date, idc )
+
+    def add_Type20( self, idc = 0, **options ):
+        """Add a Type-20 record to the NIST object."""
+        ntype = 20
+
+        if isinstance( idc, list ):
+            for i in idc:
+                self.add_default( ntype, i )
+        else:
+            self.add_default( ntype, idc )
+            self.set_field( "20.005", self.date, idc )
+
+    def add_Type21( self, idc = 0, **options ):
+        """Add a Type-21 record to the NIST object."""
+        ntype = 21
+
+        if isinstance( idc, list ):
+            for i in idc:
+                self.add_default( ntype, i )
+        else:
+            self.add_default( ntype, idc )
+
+    def add_Type22( self, idc = 0, **options ):
+        """Add a Type-22 record to the NIST object."""
+        ntype = 22
+
+        if isinstance( idc, list ):
+            for i in idc:
+                self.add_default( ntype, i )
+        else:
+            self.add_default( ntype, idc )
+            self.set_field( "22.003", self.date, idc )
+
+    def add_Type98( self, idc = 0, **options ):
+        """Add a Type-98 record to the NIST object."""
+        ntype = 98
+
+        if isinstance( idc, list ):
+            for i in idc:
+                self.add_default( ntype, i )
+        else:
+            self.add_default( ntype, idc )
+            self.set_field( "98.006", self.date, idc )
+
     def add_Type09( self, minutiae = None, idc = 0, **options ):
         """
             Add the Type-09 record to the NIST object, and set the Date.
