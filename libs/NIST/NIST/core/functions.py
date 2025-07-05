@@ -286,14 +286,18 @@ def bindump( data, n = 8 ):
             >>> bindump( data, 16 )
             '0001020304050607 ... F8F9FAFBFCFDFEFF (256 bytes)'
     """
+    if len( data ) <= n:
+        pre = multimap( [ ord, hexformat ], data )
+        return "%s (%d bytes)" % ( join( "", pre ), len( data ) )
+
     pre = [ data[ i ] for i in range( n // 2 ) ]
     post = [ data[ -( i + 1 ) ] for i in range( n // 2 ) ]
-    
+
     pre = multimap( [ ord, hexformat ], pre )
     post = multimap( [ ord, hexformat ], post )
-    
+
     post = reversed( post )
-    
+
     return "%s ... %s (%d bytes)" % ( join( "", pre ), join( "", post ), len( data ) )
 
 #    Field split
