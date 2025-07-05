@@ -220,32 +220,47 @@ class NIST( NIST_Core ):
             Return a binary dump of the NIST object. Writable in a file ("wb" mode).
             
             :return: Binary representation of the NIST object.
-            :rtype: str
+            :rtype: bytes
         """
         debug.debug( "Dumping NIST in binary" )
         
         self.clean()
         self.patch_to_standard()
         
-        outnist = []
-        
+        outnist = bytearray()
+
         for ntype in self.get_ntype():
             for idc in self.get_idc( ntype ):
                 if ntype == 4:
-                    outnist.append( int_to_binstring( int( self.data[ ntype ][ idc ][ 1 ] ), 4 * 8 ) )
-                    outnist.append( int_to_binstring( int( self.data[ ntype ][ idc ][ 2 ] ), 1 * 8 ) )
-                    outnist.append( int_to_binstring( int( self.data[ ntype ][ idc ][ 3 ] ), 1 * 8 ) )
-                    outnist.append( int_to_binstring( int( self.data[ ntype ][ idc ][ 4 ] ), 6 * 8 ) )
-                    outnist.append( int_to_binstring( int( self.data[ ntype ][ idc ][ 5 ] ), 1 * 8 ) )
-                    outnist.append( int_to_binstring( int( self.data[ ntype ][ idc ][ 6 ] ), 2 * 8 ) )
-                    outnist.append( int_to_binstring( int( self.data[ ntype ][ idc ][ 7 ] ), 2 * 8 ) )
-                    outnist.append( int_to_binstring( int( self.data[ ntype ][ idc ][ 8 ] ), 1 * 8 ) )
-                    outnist.append( self.data[ ntype ][ idc ][ 999 ] )
+                    outnist.extend( int_to_binstring( int( self.data[ ntype ][ idc ][ 1 ] ), 4 * 8 ).encode('latin-1') )
+                    outnist.extend( int_to_binstring( int( self.data[ ntype ][ idc ][ 2 ] ), 1 * 8 ).encode('latin-1') )
+                    outnist.extend( int_to_binstring( int( self.data[ ntype ][ idc ][ 3 ] ), 1 * 8 ).encode('latin-1') )
+                    outnist.extend( int_to_binstring( int( self.data[ ntype ][ idc ][ 4 ] ), 6 * 8 ).encode('latin-1') )
+                    outnist.extend( int_to_binstring( int( self.data[ ntype ][ idc ][ 5 ] ), 1 * 8 ).encode('latin-1') )
+                    outnist.extend( int_to_binstring( int( self.data[ ntype ][ idc ][ 6 ] ), 2 * 8 ).encode('latin-1') )
+                    outnist.extend( int_to_binstring( int( self.data[ ntype ][ idc ][ 7 ] ), 2 * 8 ).encode('latin-1') )
+                    outnist.extend( int_to_binstring( int( self.data[ ntype ][ idc ][ 8 ] ), 1 * 8 ).encode('latin-1') )
+                    val = self.data[ ntype ][ idc ][ 999 ]
+                    if isinstance( val, str ):
+                        val = val.encode('latin-1')
+                    outnist.extend( val )
                 else:
                     od = OrderedDict( sorted( self.data[ ntype ][ idc ].items() ) )
-                    outnist.append( join( GS, [ tagger( ntype, tagid ) + value for tagid, value in od.items() ] ) + FS )
-        
-        return "".join( outnist )
+                    fields = []
+                    for tagid, value in od.items():
+                        tag = tagger( ntype, tagid ).encode('latin-1')
+                        if self.is_binary( ntype, tagid ):
+                            if isinstance( value, str ):
+                                value = value.encode('latin-1')
+                            fields.append( tag + value )
+                        else:
+                            if isinstance( value, bytes ):
+                                value = value.decode('utf-8')
+                            fields.append( tag + value.encode('utf-8') )
+                    record = GS.encode('latin-1').join( fields ) + FS.encode('latin-1')
+                    outnist.extend( record )
+
+        return bytes( outnist )
 
     def write( self, outfile ):
         """
@@ -260,14 +275,11 @@ class NIST( NIST_Core ):
             os.makedirs( os.path.dirname( os.path.realpath( outfile ) ) )
         
         with open( outfile, "wb+" ) as fp:
-            fp.write( self.dumpbin().encode('latin-1') )
+            fp.write( self.dumpbin() )
     
     def hash( self ):
 
         dump = self.dumpbin()
-        if isinstance( dump, str ):
-            dump = dump.encode('latin-1')
-
         return hashlib.md5( dump ).hexdigest()
     
     ############################################################################

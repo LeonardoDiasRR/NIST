@@ -14,9 +14,12 @@ Encoding
 
 Earlier versions of this package decoded all text sections as ``UTF-8``.
 Some real-world NIST files contain byte values outside of that encoding,
-resulting in ``UnicodeDecodeError`` during parsing.  The library now uses
-``latin-1`` when reading, writing or hashing textual fields to preserve
-the original byte content.
+resulting in ``UnicodeDecodeError`` during parsing.  The library originally
+switched to ``latin-1`` for every operation to preserve the raw bytes.
+
+The current version stores textual fields internally as Unicode and
+writes them out using ``UTF-8``.  Binary payloads continue to be handled
+as ``latin-1`` so image data is preserved byte for byte.
 
 Binary payloads such as JPEG or WSQ images can now be passed to
 ``set_field`` directly as ``bytes``.  The library converts them to its

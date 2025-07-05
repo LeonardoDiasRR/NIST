@@ -1143,6 +1143,8 @@ class NIST( object ):
 
             if self.is_binary( ntype, tagid ) and isinstance( value, ( bytes, bytearray ) ):
                 value = value.decode( 'latin-1' )
+            elif not self.is_binary( ntype, tagid ) and isinstance( value, ( bytes, bytearray ) ):
+                value = value.decode( 'utf-8' )
 
             if not isinstance( value, str ):
                 value = str( value )
